@@ -1,0 +1,89 @@
+:root {
+  --blue: RGB(2, 40, 81);
+  --white: RGB(255, 250, 250);
+  --yellow: RGB(255, 194, 10);
+
+  --bar-size: 15%;
+  font-family: sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.Groups-Page-Container {
+  background-color: var(--white);
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  position: absolute;
+}
+
+.Groups-Buttons-Container {
+  width: 100%;
+  height: calc(100% - var(--bar-size));
+  background-color: var(--blue);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 20%);
+  grid-template-rows: repeat(auto-fill, 20%);
+  row-gap: 3%;
+  column-gap: 2%;
+
+  justify-content: space-around;
+  padding-top: 1%;
+}
+
+.Groups-Button,
+.Groups-Button:focus {
+  background-color: var(--white);
+  outline: none;
+  border: 0;
+
+  border-radius: 8px;
+
+  display: flex;
+}
+
+.Groups-Button-Icon {
+  background-color: var(--white);
+  width: 30%;
+  font-size: 5rem;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+}
+
+.Groups-Button-Description {
+  background-color: var(--white);
+  width: 70%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-left: 2%;
+
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  border-left-style: solid;
+  border-left-color: var(--blue);
+
+  justify-content: start;
+  align-items: left;
+}
