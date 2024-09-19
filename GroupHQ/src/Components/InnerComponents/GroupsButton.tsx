@@ -1,6 +1,8 @@
 import "../Groups.css";
 import { FiBookOpen } from "react-icons/fi";
 import { TfiBasketball } from "react-icons/tfi";
+import GroupsPopup from "./GroupsPopup";
+import { useState } from "react";
 
 interface props {
   topic: String;
@@ -10,6 +12,9 @@ interface props {
 }
 
 function GroupsButton(props: props) {
+
+  const [showPopup, setPop] = useState(false)
+
   function getTopic(topic: String) {
     if (topic == "Study") {
       return <FiBookOpen></FiBookOpen>;
@@ -18,10 +23,14 @@ function GroupsButton(props: props) {
     }
   }
 
+  function onClick() {
+    setPop(true)
+  }
+
   return (
     <>
-      <div className="Groups-Button">
-        <div className="Groups-Button-Icon">{getTopic(props.topic)}</div>
+      <div className="Groups-Button" onClick={() => onClick()}>
+        <div className="Groups-Button-Icon" style={{ color: "var(--blue)" }}>{getTopic(props.topic)}</div>
         <div className="Groups-Button-Description">
           <h1
             style={{
@@ -56,7 +65,7 @@ function GroupsButton(props: props) {
             style={{
               fontSize: "1rem",
               marginBottom: "0",
-              marginTop: "10%",
+              marginTop: "5%",
               fontWeight: "normal",
             }}
           >
@@ -64,6 +73,8 @@ function GroupsButton(props: props) {
           </h1>
         </div>
       </div>
+
+      <GroupsPopup show={showPopup} setShow={setPop}></GroupsPopup>
     </>
   );
 }
