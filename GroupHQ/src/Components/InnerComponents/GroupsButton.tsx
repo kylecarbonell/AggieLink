@@ -16,9 +16,9 @@ function GroupsButton(props: props) {
   const [showPopup, setPop] = useState(false)
 
   function getTopic(topic: String) {
-    if (topic == "Study") {
+    if (topic == "Study Groups") {
       return <FiBookOpen></FiBookOpen>;
-    } else if (topic == "Sport") {
+    } else if (topic == "Sports") {
       return <TfiBasketball></TfiBasketball>;
     }
   }
@@ -34,7 +34,7 @@ function GroupsButton(props: props) {
         <div className="Groups-Button-Description">
           <h1
             style={{
-              fontSize: "1.5rem",
+              fontSize: "1.25rem",
               marginBottom: "0",
               fontWeight: "bolder",
             }}
@@ -69,7 +69,7 @@ function GroupsButton(props: props) {
               fontWeight: "normal",
             }}
           >
-            5/10 People
+            5/10
           </h1>
         </div>
       </div>
