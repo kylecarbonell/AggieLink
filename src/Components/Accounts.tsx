@@ -1,6 +1,7 @@
 import Bar from "./InnerComponents/Bar";
 import "./Accounts.css"
 import { useState } from "react";
+import React from "react";
 
 function Accounts() {
     const [email, setEmail] = useState("");
