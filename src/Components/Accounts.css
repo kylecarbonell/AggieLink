@@ -1,0 +1,101 @@
+:root {
+    --blue: RGB(2, 40, 81);
+    --white: RGB(255, 250, 250);
+    --yellow: RGB(255, 194, 10);
+    --darkBlue: RGB(1, 22, 46);
+  
+    --bar-size: 15%;
+    font-family: sans-serif;
+  }
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+.Accounts-Page-Container {
+    background-color: var(--blue);
+  
+    width: 100%;
+    height: 100%;
+  
+    position: absolute;
+  
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  
+    display: flex;
+  
+    flex-direction: column;
+
+  
+    overflow-y: scroll;
+  }
+
+.Accounts-Login-Container{
+    width: 100%;
+    height: calc(100% - var(--bar-size));
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}   
+
+.Accounts-Login{
+    background-color: var(--yellow);
+
+    height: 80%;
+    width: 35%;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.Accounts-Login-Input{
+    /* background-color: var(--blue); */
+
+    height: 10%;
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 1.5rem;
+
+    box-sizing: border-box;
+
+    padding: 2%;
+    margin-bottom: 2%;
+
+    padding-left: 5%;
+    padding-right: 4%;
+
+    color: var(--blue);
+}
+
+.Accounts-Login-Input > input{
+    background-color: var(--white);
+
+    border:0;
+    border-radius: 5px;
+
+    height: 75%;
+    width: 60%;
+
+    color: var(--blue);
+}
+
+.Accounts-Login > button{
+    background-color: var(--blue);
+
+    width:50%;
+}
+

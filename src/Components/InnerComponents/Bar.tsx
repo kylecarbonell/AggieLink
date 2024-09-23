@@ -46,15 +46,17 @@ function Bar(props: Props) {
           </h1>
         </NavLink>
 
-        <h1
-          id="Bar-Title"
-          style={{ color: `var(--${props.text})` }}
-          onClick={() => {
-            console.log("HELLO");
-          }}
-        >
-          Account
-        </h1>
+        <NavLink to="/account">
+          <h1
+            id="Bar-Title"
+            style={{ color: `var(--${props.text})` }}
+            onClick={() => {
+              console.log("HELLO");
+            }}
+          >
+            Account
+          </h1>
+        </NavLink>
       </div>
     </>
   );
