@@ -4,6 +4,7 @@ import "./Groups.css";
 import GroupsButton from "./InnerComponents/GroupsButton";
 import { useEffect, useState } from "react";
 import CreateGroupPopup from "./InnerComponents/CreateGroupPopup";
+import React from "react";
 
 function Groups() {
 
@@ -34,7 +35,7 @@ function Groups() {
     const groupInt = setInterval(() => {
       console.log("tick")
       if (!showCreate) {
-        console.log("NO TICK")
+        console.log()
         getGroups()
       }
     }, 5000)
