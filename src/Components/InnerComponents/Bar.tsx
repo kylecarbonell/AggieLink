@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 interface Props {
@@ -6,6 +7,21 @@ interface Props {
 }
 
 function Bar(props: Props) {
+  const [name, setName] = useState("")
+
+  useEffect(() => {
+    let data = JSON.parse(window.localStorage.getItem("Data") || "{}");
+    console.log("CHANGED BAR")
+
+
+
+    setName(data?.first + " " + data?.last || "")
+
+    console.log(name.indexOf("undefined"))
+  }, [window.localStorage.getItem("Data")])
+
+
+
   return (
     <>
       <div
@@ -54,7 +70,9 @@ function Bar(props: Props) {
               console.log("HELLO");
             }}
           >
-            Account
+            {
+              name.indexOf("undefined") < 0 ? name : "Login"
+            }
           </h1>
         </NavLink>
       </div>

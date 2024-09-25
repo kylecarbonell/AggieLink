@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
+import { ObjectId } from "bson";
 import { db } from "./mongo.mjs";
 
 import bodyParser from "body-parser";
@@ -45,7 +46,7 @@ const decode = (str) => {
 
 app.get("/getGroups", async (req, res) => {
   const results = await db.collection("Groups").find({}).toArray();
-  console.log("GETTING GROUPS");
+  // console.log("GETTING GROUPS");
 
   //   console.log(results);
   res.json(results).status(200);
@@ -69,8 +70,9 @@ app.get("/getAccount", async (req, res) => {
 
   const user = await col.findOne({ email: doc.email });
 
-  if (user) {
-    if (doc.pw == decode(user.password)) {
+  if (user != null) {
+    console.log(user);
+    if (doc.pw == decode(user.pw)) {
       console.log("TRUE");
       res.status(200);
     } else {
@@ -98,6 +100,74 @@ app.post("/createAccount", async (req, res) => {
 
   let result = await col.insertOne(doc);
   res.send(result).status(200);
+});
+
+app.get("/getUser", async (req, res) => {
+  console.log("HERE");
+  let doc = req.query.doc.split(",");
+
+  let col = db.collection("Users");
+  let fin = [];
+  for (let i in doc) {
+    let temp = await col.findOne({ email: doc[i] });
+
+    fin.push(temp);
+  }
+
+  // console.log(fin);/\
+  res.status(200).json(fin);
+});
+
+app.post("/addToGroup", async (req, res) => {
+  const data = req.body.data;
+  const id = new ObjectId(req.body._id);
+
+  console.log(id);
+  let col = db.collection("Groups");
+  let doc = await col.findOne({ _id: id });
+  console.log(doc);
+
+  if (doc.users.includes(data.email)) {
+    console.log("CONTAIN");
+    res.status(201).send();
+    return;
+  }
+
+  let update = await col.updateOne(
+    { _id: id },
+    { $push: { users: data.email } }
+  );
+
+  let newDoc = await col.findOne({ _id: id });
+  console.log(newDoc.users);
+
+  res.status(200).json(newDoc.users);
+});
+
+app.post("/leaveGroup", async (req, res) => {
+  const data = req.body.data;
+  const id = new ObjectId(req.body._id);
+
+  console.log(id);
+  let col = db.collection("Groups");
+  let doc = await col.findOne({ _id: id });
+  console.log(doc);
+
+  if (!doc.users.includes(data.email)) {
+    console.log("Not In Group");
+    res.status(201).send();
+    return;
+  }
+
+  let update = await col.updateOne(
+    { _id: id },
+    { $pull: { users: data.email } }
+  );
+
+  let newDoc = await col.findOne({ _id: id });
+  console.log(newDoc.users);
+
+  res.status(200).json(newDoc.users);
 });
 
 async function start() {

@@ -3,13 +3,19 @@ import "./Accounts.css"
 import { useRef, useState } from "react";
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 function Accounts() {
+
+
     const [first, setFirst] = useState("");
     const [last, setLast] = useState("");
     const [email, setEmail] = useState("");
     const [pw, setPw] = useState("");
 
     const [create, setCreate] = useState(false)
+
+    const navigate = useNavigate();
 
     const submitCreate = async (e: any) => {
         if (email == "" || pw == "" || first == "" || last == "") {
@@ -35,7 +41,9 @@ function Accounts() {
                 setFirst("")
                 setLast("")
                 setEmail("")
-                setPw("")
+                setPw(" ")
+
+                setCreate(false)
             } else {
                 alert("Email is already taken")
             }
@@ -65,6 +73,8 @@ function Accounts() {
                 window.localStorage.setItem("Data", JSON.stringify(json))
                 setEmail("")
                 setPw("")
+
+                navigate("/groups", {})
             } else if (res.status == 201) {
                 alert("Incorrect password")
             } else {

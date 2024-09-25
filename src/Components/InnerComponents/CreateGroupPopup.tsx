@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -6,9 +7,9 @@ interface Props {
 }
 
 function CreateGroupPopup(props: Props) {
-
-
     async function submit() {
+        let user = JSON.parse(window.localStorage.getItem("Data") || "{}")
+
         let location = loc
         if (location == "") {
             location = "TBD"
@@ -21,7 +22,8 @@ function CreateGroupPopup(props: Props) {
             "location": location,
             "num_people": num,
             "start_time": startTime[0] + startTime[1],
-            "end_time": endTime[0] + endTime[1]
+            "end_time": endTime[0] + endTime[1],
+            "users": [user?.email]
         }
 
         console.log(doc)

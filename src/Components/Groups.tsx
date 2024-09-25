@@ -12,7 +12,6 @@ function Groups() {
   const [groups, setGroups] = useState<any>([])
 
   const getGroups = async () => {
-    console.log("FETCHING")
     const data = await fetch(`http://localhost:8000/getGroups`);
 
     if (!data.ok) {
@@ -22,7 +21,7 @@ function Groups() {
 
     await data.json().then((json) => {
       setGroups(json)
-      console.log(json)
+      // console.log(json)
     });
 
   };
@@ -33,7 +32,7 @@ function Groups() {
 
   useEffect(() => {
     const groupInt = setInterval(() => {
-      console.log("tick")
+      // console.log("tick")
       if (!showCreate) {
         console.log()
         getGroups()
@@ -55,8 +54,8 @@ function Groups() {
         </div>
         <div className="Groups-Buttons-Container">
           {
-            groups.map((val: any) => {
-              return <GroupsButton topic={val.group_type} title={val.event_type} loc={val.location} city={val.city}></GroupsButton>
+            groups.map((val: any, key: any) => {
+              return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id}></GroupsButton>
             })
           }
         </div>

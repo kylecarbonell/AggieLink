@@ -2,18 +2,24 @@ import "../Groups.css";
 import { FiBookOpen } from "react-icons/fi";
 import { TfiBasketball } from "react-icons/tfi";
 import GroupsPopup from "./GroupsPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
 
 interface props {
+  max_users: String;
   topic: String;
   title: String;
   city: String;
   loc: String;
+  users: Array<String>;
+  end_time: String;
+  _id: String;
 }
 
 function GroupsButton(props: props) {
 
   const [showPopup, setPop] = useState(false)
+  const [userInfo, setUserInfo] = useState<any>([])
 
   function getTopic(topic: String) {
     if (topic == "Study Groups") {
@@ -23,7 +29,25 @@ function GroupsButton(props: props) {
     }
   }
 
+  const getUser = async () => {
+    const result = await fetch(`http://localhost:8000/getUser?doc=${props.users}`).then(async (res) => {
+
+
+      const json = await res.json()
+      console.log("USERS")
+      console.log(json)
+
+      setUserInfo(json)
+    });
+
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
   function onClick() {
+    getUser()
     setPop(true)
   }
 
@@ -69,12 +93,12 @@ function GroupsButton(props: props) {
               fontWeight: "normal",
             }}
           >
-            5/10
+            {props.users.length} / {props.max_users}
           </h1>
         </div>
       </div>
 
-      <GroupsPopup show={showPopup} setShow={setPop}></GroupsPopup>
+      <GroupsPopup show={showPopup} setShow={setPop} topic={props.topic} title={props.title} loc={props.loc} city={props.city} users={userInfo} max_users={props.max_users} end_time={props.end_time} _id={props._id} emails={props.users}></GroupsPopup>
     </>
   );
 }
