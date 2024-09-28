@@ -25,7 +25,7 @@ function Accounts() {
 
     const logout = async (e: any) => {
         e.preventDefault()
-        navigate("/")
+        // navigate("/")
         window.localStorage.setItem("Data", "")
 
     }
