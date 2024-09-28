@@ -236,7 +236,10 @@ function CreateGroupPopup(props: Props) {
                     <div onClick={() => {
                         resetValue()
                     }}>Cancel</div>
-                    <div onClick={() => submit()}>Create Group</div>
+                    <div onClick={(e) => {
+                        e.preventDefault()
+                        submit()
+                    }}>Create Group</div>
                 </div>
             </div >
         </div >
