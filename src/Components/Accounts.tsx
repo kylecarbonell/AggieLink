@@ -18,7 +18,7 @@ function Accounts() {
     const navigate = useNavigate();
 
     const logout = async (e: any) => {
-        // e.preventDefault()
+        e.preventDefault()
         navigate("/")
         window.localStorage.setItem("Data", "")
 
@@ -94,12 +94,12 @@ function Accounts() {
                 <div className="Accounts-Login-Container">
                     {
                         window.localStorage.getItem("Data") != "" ?
-                            <form className="Accounts-Login" onSubmit={(e) => {
+                            <div className="Accounts-Login" onSubmit={(e) => {
                                 e.preventDefault()
                             }}>
                                 <h1>Logout?</h1>
                                 <button onClick={(e) => logout(e)} style={{ marginBottom: "1%" }}>Confirm</button>
-                            </form>
+                            </div>
                             :
                             create == false ?
                                 <form className="Accounts-Login">

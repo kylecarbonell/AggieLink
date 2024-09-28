@@ -29,7 +29,7 @@ function App() {
       }
 
       setCount(imgCount.current);
-      console.log(imgCount.current);
+      // console.log(imgCount.current);
     }, 2000);
 
     return () => clearInterval(picInt);
