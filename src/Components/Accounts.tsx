@@ -17,12 +17,6 @@ function Accounts() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        window.addEventListener('beforeunload', function (event) {
-            event.stopImmediatePropagation();
-        });
-    }, [])
-
     const logout = () => {
         console.log("CHANGED AND LOGGED")
         navigate("/")
@@ -101,7 +95,10 @@ function Accounts() {
                         window.localStorage.getItem("Data") != "" ?
                             <div className="Accounts-Login" >
                                 <h1>Logout?</h1>
-                                <button onClick={() => logout()} style={{ marginBottom: "1%" }}>Confirm</button>
+                                <button onClick={() => {
+                                    console.log("HI")
+                                    logout()
+                                }} style={{ marginBottom: "1%" }}>TEMP</button>
                             </div>
                             :
                             create == false ?
