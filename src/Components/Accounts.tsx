@@ -18,8 +18,7 @@ function Accounts() {
     const navigate = useNavigate();
 
     const logout = () => {
-        navigate("/")
-        window.localStorage.setItem("Data", "")
+        // window.localStorage.setItem("Data", "")
     }
 
     const submitCreate = async (e: any) => {
