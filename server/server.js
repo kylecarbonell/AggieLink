@@ -198,7 +198,7 @@ app.get("/getLoc", async (req, res) => {
   const area = req.query.loc;
   console.log(area);
   const r = await fetch(
-    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=37.76999%2C-122.44696&radius=500&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=38.5449%2C-121.7405&radius=500&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
   )
     .then(async (result) => {
       console.log(result.url);
