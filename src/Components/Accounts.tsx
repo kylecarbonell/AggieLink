@@ -19,7 +19,7 @@ function Accounts() {
 
     useEffect(() => {
         return () => {
-            window.removeEventListener("beforeunload", (e) => { e.preventDefault() })
+            window.removeEventListener("beforeunload", (e) => { })
         }
     }, [])
 
@@ -27,6 +27,10 @@ function Accounts() {
         e.preventDefault()
         // navigate("/")
         window.localStorage.setItem("Data", "")
+
+        if (window.localStorage.getItem("Data") == "") {
+            window.location.reload()
+        }
 
     }
 
