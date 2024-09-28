@@ -5,7 +5,7 @@ import GroupsButton from "./InnerComponents/GroupsButton";
 import { useEffect, useRef, useState } from "react";
 import CreateGroupPopup from "./InnerComponents/CreateGroupPopup";
 import React from "react";
-import { groupTypes } from "../Data/GroupData";
+import { call, groupTypes } from "../Data/GroupData";
 
 function Groups() {
 
@@ -21,7 +21,9 @@ function Groups() {
       filterType.current = ""
     }
 
-    const data = await fetch(`http://localhost:8000/getGroups?query=${filterType.current}`);
+    console.log("HEHRH")
+
+    const data = await fetch(`${call}/getGroups?query=${filterType.current}`);
 
     if (!data.ok) {
       console.log("ERROR")
