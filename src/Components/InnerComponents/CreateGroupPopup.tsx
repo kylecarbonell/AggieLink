@@ -21,8 +21,8 @@ function CreateGroupPopup(props: Props) {
     const [locOptions, setOptions] = useState<Array<String>>([])
 
 
-    const [startTime, setStart] = useState<any>([1, "AM"])
-    const [endTime, setEnd] = useState<any>([2, "AM"])
+    const [startTime, setStart] = useState<any>([1, "PM"])
+    const [endTime, setEnd] = useState<any>([2, "PM"])
 
 
     useEffect(() => {
