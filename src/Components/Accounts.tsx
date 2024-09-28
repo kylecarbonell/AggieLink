@@ -24,9 +24,9 @@ function Accounts() {
     }, [])
 
     const logout = () => {
-        window.localStorage.setItem("Data", "")
-
+        console.log("CHANGED AND LOGGED")
         navigate("/")
+        window.localStorage.setItem("Data", "")
     }
 
     const submitCreate = async (e: any) => {
