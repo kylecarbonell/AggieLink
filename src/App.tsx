@@ -9,7 +9,7 @@ function App() {
   const [panoCount, setCount] = useState(0);
 
   useEffect(() => {
-    window.onbeforeunload = () => { }
+    // window.onbeforeunload = () => { }
     // window.addEventListener("beforeunload", (ev) => {
     //   ev.preventDefault();
     //   window.localStorage.setItem("Data", "")
