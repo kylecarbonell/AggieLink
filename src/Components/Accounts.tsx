@@ -58,8 +58,6 @@ function Accounts() {
         })
     }
 
-
-
     const onSubmit = async (e: any) => {
         if (email == "" || pw == "") {
             alert("Invalid login information")
@@ -67,8 +65,6 @@ function Accounts() {
         }
 
         e.preventDefault()
-
-
 
         const data = { email: email, pw: pw }
         const result = await fetch(`http://localhost:8000/getAccount?data=${JSON.stringify(data)}`).then(async (res) => {
@@ -98,7 +94,9 @@ function Accounts() {
                 <div className="Accounts-Login-Container">
                     {
                         window.localStorage.getItem("Data") != "" ?
-                            <form className="Accounts-Login">
+                            <form className="Accounts-Login" onSubmit={(e) => {
+                                e.preventDefault()
+                            }}>
                                 <h1>Logout?</h1>
                                 <button onClick={(e) => logout(e)} style={{ marginBottom: "1%" }}>Confirm</button>
                             </form>
