@@ -98,7 +98,7 @@ function CreateGroupPopup(props: Props) {
             const text = await res.text();
             console.log(text)
             resetValue()
-            window.location.reload()
+            // window.location.reload()
         });
     }
 
