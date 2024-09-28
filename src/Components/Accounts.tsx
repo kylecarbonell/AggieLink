@@ -100,7 +100,7 @@ function Accounts() {
                                 <button onClick={() => {
                                     console.log("HI")
                                     logout()
-                                }} style={{ marginBottom: "1%" }}>TEMP</button>
+                                }} style={{ marginBottom: "1%" }}>Confirm</button>
                             </form>
                             :
                             create == false ?
