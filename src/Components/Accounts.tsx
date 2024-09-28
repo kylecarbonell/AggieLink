@@ -18,8 +18,10 @@ function Accounts() {
     const navigate = useNavigate();
 
     const logout = async (e: any) => {
-        e.preventDefault()
+        // e.preventDefault()
+        navigate("/")
         window.localStorage.setItem("Data", "")
+
     }
 
     const submitCreate = async (e: any) => {
