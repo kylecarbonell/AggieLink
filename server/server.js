@@ -201,6 +201,7 @@ app.get("/getLoc", async (req, res) => {
     `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=37.76999%2C-122.44696&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
   )
     .then(async (result) => {
+      console.log(result.url);
       const json = await result.json();
       const pred = json.predictions;
       const temp = [];
@@ -209,9 +210,9 @@ app.get("/getLoc", async (req, res) => {
       while (i < 3 && i < pred.length) {
         const loc = pred[i].description.split(",");
 
-        console.log(
-          loc[0] + ", " + loc[loc.length - 3] + ", " + loc[loc.length - 2]
-        );
+        // console.log(
+        //   loc[0] + ", " + loc[loc.length - 3] + ", " + loc[loc.length - 2]
+        // );
 
         temp.push([
           loc[0],

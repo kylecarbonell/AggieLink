@@ -17,7 +17,6 @@ function Groups() {
   const filterType = useRef<String>();
 
   const getGroups = async () => {
-
     console.log(call)
     if (filterType.current == "Select") {
       filterType.current = ""
