@@ -17,6 +17,12 @@ function Accounts() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.addEventListener('beforeunload', function (event) {
+            event.stopImmediatePropagation();
+        });
+    }, [])
+
     const logout = () => {
         window.localStorage.setItem("Data", "")
 
