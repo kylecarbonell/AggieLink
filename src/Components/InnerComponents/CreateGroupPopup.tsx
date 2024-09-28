@@ -112,7 +112,10 @@ function CreateGroupPopup(props: Props) {
                     <h1 style={{ fontSize: "2rem", color: "var(--blue)" }}>Create Group</h1>
                 </div>
 
-                <form className="Groups-Create-Group-Dropdowns" onSubmit={() => submit()}>
+                <form className="Groups-Create-Group-Dropdowns" onSubmit={(e) => {
+                    e.preventDefault()
+                    submit()
+                }}>
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "group" }}>
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Group Type :

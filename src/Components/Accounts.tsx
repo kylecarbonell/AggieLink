@@ -93,13 +93,15 @@ function Accounts() {
                 <div className="Accounts-Login-Container">
                     {
                         window.localStorage.getItem("Data") != "" ?
-                            <div className="Accounts-Login" >
+                            <form className="Accounts-Login" onSubmit={(e) => {
+                                e.preventDefault()
+                            }}>
                                 <h1>Logout?</h1>
                                 <button onClick={() => {
                                     console.log("HI")
                                     logout()
                                 }} style={{ marginBottom: "1%" }}>TEMP</button>
-                            </div>
+                            </form>
                             :
                             create == false ?
                                 <form className="Accounts-Login">
