@@ -18,7 +18,9 @@ function Accounts() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        window.removeEventListener("beforeunload", () => { })
+        return () => {
+            window.removeEventListener("beforeunload", (e) => { e.preventDefault() })
+        }
     }, [])
 
     const logout = async (e: any) => {
