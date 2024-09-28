@@ -18,6 +18,7 @@ function Accounts() {
     const navigate = useNavigate();
 
     const logout = async (e: any) => {
+        e.preventDefault()
         window.localStorage.setItem("Data", "")
     }
 
