@@ -31,34 +31,67 @@ function GroupsPopup(info: Info) {
 
     useEffect(() => {
         // console.log("user in popup")
-        setUser(info.users)
+        // setUser(info.users)
         setEmails(info.emails)
+        getUser(info.emails)
     }, [info.show])
 
     useEffect(() => {
         info.setShow(false)
     }, [])
 
+    useEffect(() => {
+        getUser(emails)
+    }, [emails])
+
 
     const joinGroup = async () => {
+        if (users.length != info.max_users) {
+            const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
+            // console.log(data)
+            const result = await fetch(`http://localhost:8000/addToGroup`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ data: data, _id: info._id })
+            }).then(async (res) => {
+                if (res.status == 201) {
+                    setError("Already in group")
+                }
+
+                const json = await res.json()
+                console.log("POPUP JOIN GROUP JSON")
+                console.log(json)
+                getUser(json)
+
+
+                console.log("USERS", users.length)
+                if (users.length >= info.max_users) {
+                    deleteGroup()
+                }
+
+
+            })
+        } else {
+            setError("Group is currently full")
+        }
+
+    }
+
+    const deleteGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
-        // console.log(data)
-        const result = await fetch(`http://localhost:8000/addToGroup`, {
+        await fetch(`http://localhost:8000/deleteGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: data, _id: info._id })
-        }).then(async (res) => {
-            if (res.status == 201) {
-                setError("Already in group")
+        }).then((res) => {
+            if (res.status == 200) {
+                console.log("ALL GOOD")
+                info.setShow(false)
             }
-
-            const json = await res.json()
-            console.log("POPUP JOIN GROUP JSON")
-            console.log(json)
-
-            getUser(json)
         })
     }
+
+
 
     const leaveGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
@@ -73,15 +106,21 @@ function GroupsPopup(info: Info) {
             }
 
             const json = await res.json()
-            // console.log("POPUP JOIN GROUP JSON")
-            // console.log(json)
+            console.log("POPUP JOIN GROUP JSON")
+            console.log(json)
 
-            getUser(json)
+            if (json.length == 0 || json.length >= info.max_users) {
+                deleteGroup()
+            } else {
+                getUser(json)
+            }
+
+
         })
     }
 
-    const getUser = async (emails) => {
-        const result = await fetch(`http://localhost:8000/getUser?doc=${emails}`).then(async (res) => {
+    const getUser = async (em: any) => {
+        const result = await fetch(`http://localhost:8000/getUser?doc=${em}`).then(async (res) => {
 
 
             const json = await res.json()
@@ -108,11 +147,13 @@ function GroupsPopup(info: Info) {
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>End</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.loc}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.city}</h1>
-                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.users.length || 0} / {info.max_users}</h1>
+                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{users.length || 0} / {info.max_users}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.end_time}</h1>
                         </div>
                         <div className="Groups-Popup-Users">
                             {users.map((val: any, key: any) => {
+                                console.log("THIS IS VAL REPEAT")
+                                console.log(val)
                                 return (
                                     <div key={key}>
                                         <FaRegUserCircle style={{ color: "var(--blue)", fontSize: "3rem", marginRight: "2%" }}></FaRegUserCircle>
@@ -121,12 +162,30 @@ function GroupsPopup(info: Info) {
                                 )
                             })}
                         </div>
-                        <div className="Groups-Popup-Button-Container">
-                            <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
+                        <div className="Groups-Popup-Button-Container" >
+
+                            {
+
+                                (window.localStorage.getItem("Data") != "" && !window.localStorage.getItem("Data")?.includes(emails[0])) && <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
+                            }
+
+                            {
+                                window.localStorage.getItem("Data")?.includes(emails[0]) && <button className="Groups-Popup-Close-Button" onClick={() => deleteGroup()}>Disband Group</button>
+                            }
+
                             <button className="Groups-Popup-Close-Button" onClick={() => info.setShow(!info.show)}>Close</button>
-                            <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
+                            {
+                                window.localStorage.getItem("Data") != "" && <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
+                            }
+
+
                         </div>
-                        <p style={{ color: "black" }}>{error}</p>
+                        <div className="Groups-Popup-Button-Error">
+                            {
+                                window.localStorage.getItem("Data") == "" && <p style={{ color: "black" }}>Please Login to join this group!</p>
+                            }
+                            <p style={{ color: "black" }}>{error}</p>
+                        </div>
                     </div>
                 </div >
             }

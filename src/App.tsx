@@ -2,10 +2,23 @@ import { useEffect, useRef, useState } from "react";
 
 import "./App.css";
 import Bar from "./Components/InnerComponents/Bar";
+import React from "react";
 
 function App() {
   const imgCount = useRef<number>(0);
   const [panoCount, setCount] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", (ev) => {
+      ev.preventDefault();
+      window.localStorage.setItem("Data", "")
+      return ev.returnValue = 'Are you sure you want to close?';
+    });
+
+    return () => window.removeEventListener("beforeunload", () => {
+      console.log("removed")
+    })
+  }, [])
 
   useEffect(() => {
     const picInt = setInterval(() => {
@@ -51,7 +64,7 @@ function App() {
                 width: "60%",
               }}
             >
-              Welcome to UC Davis Group HQ! With this website you are able to
+              Welcome to UC Davis' AggieLink! With this website you are able to
               find any kind of group located in your area. Whether it be a
               sports group, a study group, and a friend to hang out with, this
               is the place to find it!

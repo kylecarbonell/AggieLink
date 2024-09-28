@@ -1,6 +1,11 @@
 import "../Groups.css";
+
 import { FiBookOpen } from "react-icons/fi";
 import { TfiBasketball } from "react-icons/tfi";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { FiCoffee } from "react-icons/fi";
+
+
 import GroupsPopup from "./GroupsPopup";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -26,6 +31,10 @@ function GroupsButton(props: props) {
       return <FiBookOpen></FiBookOpen>;
     } else if (topic == "Sports") {
       return <TfiBasketball></TfiBasketball>;
+    } else if (topic == "Coffee") {
+      return <FiCoffee />
+    } else if (topic == "Food") {
+      return <IoFastFoodOutline />
     }
   }
 
@@ -34,8 +43,8 @@ function GroupsButton(props: props) {
 
 
       const json = await res.json()
-      console.log("USERS")
-      console.log(json)
+      // console.log("USERS")
+      // console.log(json)
 
       setUserInfo(json)
     });
@@ -77,7 +86,7 @@ function GroupsButton(props: props) {
           </h1>
           <h1
             style={{
-              fontSize: "1rem",
+              fontSize: "1.6vh",
               marginBottom: "0",
               marginTop: "2%",
               fontWeight: "normal",

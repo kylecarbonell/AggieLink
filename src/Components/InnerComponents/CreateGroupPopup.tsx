@@ -1,19 +1,82 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { cities, events, groupTypes } from "../../Data/GroupData";
 
 interface Props {
     show: Boolean;
-    setShow: any
+    setShow: any;
 }
 
+
+
 function CreateGroupPopup(props: Props) {
+    const [group, setGroup] = useState<string>(groupTypes[0]);
+    const [event, setEvent] = useState<string>(events[group][0]);
+    const [city, setCity] = useState<string>(cities[0]);
+    const [loc, setLoc] = useState<string>("");
+    const [num, setNum] = useState("");
+
+    const [inputLoc, setInputLoc] = useState("")
+
+    const [locOptions, setOptions] = useState<Array<String>>([])
+
+
+    const [startTime, setStart] = useState<any>([1, "AM"])
+    const [endTime, setEnd] = useState<any>([2, "AM"])
+
+
+    useEffect(() => {
+        setEvent(events[group][0])
+    }, [group])
+
+    useEffect(() => {
+        console.log(event)
+    }, [event])
+
+    useEffect(() => {
+        console.log("CURRENT LOC")
+        console.log(loc)
+    }, [loc])
+
+    async function GetLocation(area: string) {
+        await fetch(`http://localhost:8000/getLoc?loc=${area}`).then(async (result) => {
+            const json = await result.json()
+            console.log(json)
+            setOptions(json)
+        })
+    }
+
+    function resetValue() {
+        props.setShow(false)
+        setGroup(groupTypes[0])
+        setCity(cities[0])
+        setLoc("")
+        setNum("")
+        setOptions([])
+        setInputLoc("")
+    }
+
     async function submit() {
         let user = JSON.parse(window.localStorage.getItem("Data") || "{}")
 
+        // console.log(user)
+
+        if (JSON.stringify(user) == "{}") {
+            alert("Please log in to create a group!")
+            return
+        } 
+
         let location = loc
         if (location == "") {
-            location = "TBD"
+            alert("Please enter a location")
+            return
         }
+
+        if (num == "" || Number.parseInt(num) < 2) {
+            alert("Please enter a number of people greater than 2")
+            return
+        }
+
 
         let doc = {
             "group_type": group,
@@ -26,7 +89,7 @@ function CreateGroupPopup(props: Props) {
             "users": [user?.email]
         }
 
-        console.log(doc)
+        // console.log(doc)
 
         await fetch(`http://localhost:8000/postGroup?doc=${JSON.stringify(doc)}`, {
             method: "post",
@@ -34,71 +97,12 @@ function CreateGroupPopup(props: Props) {
         }).then(async (res) => {
             const text = await res.text();
             console.log(text)
+            resetValue()
             window.location.reload()
         });
     }
 
-    const groupTypes = [
-        "Sports",
-        "Study Groups",
-        "Coffee",
-        "Food"
-    ]
 
-    const events: Record<string, string[]> = {
-        "Sports": [
-            "Volleyball",
-            "Basketball",
-            "Hiking",
-            "Pickleball",
-            "Gym",
-            "Other"
-        ],
-        "Study Groups": [
-            "Math",
-            "English",
-            "Biology",
-            "Chemistry",
-            "Computer Science",
-            "Other"
-        ],
-        "Coffee": [
-            "Coffee Shop"
-        ],
-        "Food": [
-            "Restaurant",
-            "Snack",
-            "Fast Food"
-        ]
-    }
-
-    const cities = [
-        "Davis, Ca",
-        "San Francisco, Ca",
-        "San Jose, Ca",
-        "Milpitas, Ca",
-        "Palo Alto, Ca",
-        "Sacramento, Ca"
-    ]
-
-    const number = [
-        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"
-    ]
-
-    const [group, setGroup] = useState<string>(groupTypes[0]);
-    const [event, setEvent] = useState<string>(events[group][0]);
-    const [city, setCity] = useState<string>(cities[0]);
-    const [loc, setLoc] = useState<string>("");
-    const [num, setNum] = useState<number>(0);
-
-
-    const [startTime, setStart] = useState<any>([1, "AM"])
-    const [endTime, setEnd] = useState<any>([2, "AM"])
-
-
-    useEffect(() => {
-        console.log(group)
-    }, [group])
 
     return (<>
         <div className="Groups-Popup-Container" style={props.show ? { visibility: "visible" } : { visibility: "hidden" }}>
@@ -114,6 +118,7 @@ function CreateGroupPopup(props: Props) {
                             Group Type :
                         </h1>
                         <select className="Groups-Create-Group-Selects" value={group} onChange={(e) => {
+                            console.log(group)
                             setGroup(e.target.value)
                         }}>
                             {
@@ -141,44 +146,44 @@ function CreateGroupPopup(props: Props) {
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "city" }}>
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
-                            City :
-                        </h1>
-                        <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                            setCity(e.target.value)
-                        }}>
-                            {
-                                cities.map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
-                            }
-                        </select>
-                    </div>
-
-                    <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "location" }}>
-                        <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Location :
                         </h1>
-                        <input className="Groups-Create-Group-Selects" value={loc} onChange={(e) => {
-                            setLoc(e.target.value.toUpperCase())
-                            console.log(loc)
-                        }}>
+                        <input className="Groups-Create-Group-Selects" onChange={(e) => {
+                            setInputLoc(e.target.value)
+                            GetLocation(e.target.value)
+                            const temp = locOptions[0]
+                            setLoc(temp[0])
+                            setCity(temp[1].substring(2))
 
+
+                        }} value={inputLoc}>
                         </input>
                     </div>
+
+                    <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "location" }} >
+                        {
+                            locOptions.length != 0 &&
+                            <select className="Groups-Create-Group-Selects" onChange={(e) => {
+                                    setLoc(e.target.value)
+                                }} >
+                                    {locOptions.map((val, key) => {
+                                        return <option>{val}</option>
+                                    })}
+                                </select>
+                        }
+                    </div>
+
+
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "people" }}>
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Number of People :
                         </h1>
-                        <select className="Groups-Create-Group-Selects" value={num} onChange={(e) => {
-                            setNum(Number.parseInt(e.target.value))
+                        <input className="Groups-Create-Group-Selects" value={num} onChange={(e) => {
+                            setNum(e.target.value)
                         }}>
-                            {
-                                number.map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
-                            }
-                        </select>
+
+                        </input>
                     </div>
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "time1" }}>
@@ -226,15 +231,11 @@ function CreateGroupPopup(props: Props) {
                 </form>
                 <div className="Groups-Create-Group-Buttons" style={{ fontSize: "2rem", borderTop: "1px solid var(--yellow)" }}>
                     <div onClick={() => {
-                        props.setShow(false)
-                        setGroup(groupTypes[0])
-                        setCity(cities[0])
-                        setLoc("")
-                        setNum(0)
+                        resetValue()
                     }}>Cancel</div>
                     <div onClick={() => submit()}>Create Group</div>
                 </div>
-            </div>
+            </div >
         </div >
     </>)
 }

@@ -36,7 +36,7 @@ function Bar(props: Props) {
             color: `var(--${props.text})`,
           }}
         >
-          Group HQ
+          AggieLink
         </h1>
         <NavLink to="/">
           <h1
