@@ -221,7 +221,6 @@ app.get("/getLoc", async (req, res) => {
         i += 1;
       }
 
-      temp.push(result.url);
 
       // console.log(teresuylmp);
       res.json(temp);
