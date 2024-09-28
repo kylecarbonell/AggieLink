@@ -198,7 +198,7 @@ app.get("/getLoc", async (req, res) => {
   const area = req.query.loc;
   console.log(area);
   const r = await fetch(
-    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=37.76999%2C-122.44696&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=37.76999%2C-122.44696&radius=500&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
   )
     .then(async (result) => {
       console.log(result.url);
@@ -221,6 +221,9 @@ app.get("/getLoc", async (req, res) => {
         i += 1;
       }
 
+      temp.push(result.url);
+
+      // console.log(teresuylmp);
       res.json(temp);
     })
     .catch((e) => {

@@ -23,6 +23,6 @@ export const cities = [
   "Sacramento, Ca",
 ];
 
-export const call = "https://aggielink.onrender.com";
+// export const call = "https://aggielink.onrender.com";
 
-// export const call = "http://localhost:8000"
+export const call = "http://localhost:8000"
