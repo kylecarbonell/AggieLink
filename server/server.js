@@ -196,7 +196,7 @@ app.post("/leaveGroup", async (req, res) => {
 
 app.get("/getLoc", async (req, res) => {
   const area = req.query.loc;
-  // console.log(area);
+  console.log(area);
   const r = await fetch(
     `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=37.76999%2C-122.44696&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
   )
