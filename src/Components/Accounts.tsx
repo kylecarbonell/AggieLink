@@ -17,21 +17,9 @@ function Accounts() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        return () => {
-            window.removeEventListener("beforeunload", (e) => { })
-        }
-    }, [])
-
-    const logout = async (e: any) => {
-        e.preventDefault()
-        // navigate("/")
+    const logout = () => {
+        navigate("/")
         window.localStorage.setItem("Data", "")
-
-        if (window.localStorage.getItem("Data") == "") {
-            window.location.reload()
-        }
-
     }
 
     const submitCreate = async (e: any) => {
@@ -104,11 +92,9 @@ function Accounts() {
                 <div className="Accounts-Login-Container">
                     {
                         window.localStorage.getItem("Data") != "" ?
-                            <div className="Accounts-Login" onSubmit={(e) => {
-                                e.preventDefault()
-                            }}>
+                            <div className="Accounts-Login" >
                                 <h1>Logout?</h1>
-                                <button onClick={(e) => logout(e)} style={{ marginBottom: "1%" }}>Confirm</button>
+                                <button onClick={() => logout()} style={{ marginBottom: "1%" }}>Confirm</button>
                             </div>
                             :
                             create == false ?
