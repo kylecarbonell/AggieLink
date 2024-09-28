@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
+import { call } from "../Data/GroupData";
 
 function Accounts() {
 
@@ -35,7 +36,7 @@ function Accounts() {
 
         console.log(doc)
 
-        const result = await fetch(`http://localhost:8000/createAccount`, {
+        const result = await fetch(`${call}/createAccount`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: doc })
@@ -66,7 +67,7 @@ function Accounts() {
         e.preventDefault()
 
         const data = { email: email, pw: pw }
-        const result = await fetch(`http://localhost:8000/getAccount?data=${JSON.stringify(data)}`).then(async (res) => {
+        const result = await fetch(`${call}/getAccount?data=${JSON.stringify(data)}`).then(async (res) => {
             console.log("HERE")
             console.log(res.status)
 

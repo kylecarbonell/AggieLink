@@ -9,6 +9,7 @@ import { FiCoffee } from "react-icons/fi";
 import GroupsPopup from "./GroupsPopup";
 import { useEffect, useState } from "react";
 import React from "react";
+import { call } from "../../Data/GroupData";
 
 interface props {
   max_users: String;
@@ -39,7 +40,7 @@ function GroupsButton(props: props) {
   }
 
   const getUser = async () => {
-    const result = await fetch(`http://localhost:8000/getUser?doc=${props.users}`).then(async (res) => {
+    const result = await fetch(`${call}/getUser?doc=${props.users}`).then(async (res) => {
 
 
       const json = await res.json()

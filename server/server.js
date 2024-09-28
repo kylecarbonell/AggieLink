@@ -209,9 +209,9 @@ app.get("/getLoc", async (req, res) => {
       while (i < 3 && i < pred.length) {
         const loc = pred[i].description.split(",");
 
-        // console.log(
-        //   loc[0] + ", " + loc[loc.length - 3] + ", " + loc[loc.length - 2]
-        // );
+        console.log(
+          loc[0] + ", " + loc[loc.length - 3] + ", " + loc[loc.length - 2]
+        );
 
         temp.push([
           loc[0],

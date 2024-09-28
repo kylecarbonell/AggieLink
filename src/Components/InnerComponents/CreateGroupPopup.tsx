@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { cities, events, groupTypes } from "../../Data/GroupData";
+import { call, cities, events, groupTypes } from "../../Data/GroupData";
 
 interface Props {
     show: Boolean;
@@ -39,7 +39,7 @@ function CreateGroupPopup(props: Props) {
     }, [loc])
 
     async function GetLocation(area: string) {
-        await fetch(`http://localhost:8000/getLoc?loc=${area}`).then(async (result) => {
+        await fetch(`${call}/getLoc?loc=${area}`).then(async (result) => {
             const json = await result.json()
             console.log(json)
             setOptions(json)
@@ -91,7 +91,7 @@ function CreateGroupPopup(props: Props) {
 
         // console.log(doc)
 
-        await fetch(`http://localhost:8000/postGroup?doc=${JSON.stringify(doc)}`, {
+        await fetch(`${call}/postGroup?doc=${JSON.stringify(doc)}`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
         }).then(async (res) => {

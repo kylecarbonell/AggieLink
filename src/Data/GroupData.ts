@@ -22,3 +22,7 @@ export const cities = [
   "Palo Alto, Ca",
   "Sacramento, Ca",
 ];
+
+export const call = "https://aggielink.onrender.com";
+
+// export const call = "http://localhost:8000"

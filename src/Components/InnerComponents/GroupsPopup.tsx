@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { call } from "../../Data/GroupData";
 
 interface Info {
     show: Boolean
@@ -49,7 +50,7 @@ function GroupsPopup(info: Info) {
         if (users.length != info.max_users) {
             const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
             // console.log(data)
-            const result = await fetch(`http://localhost:8000/addToGroup`, {
+            const result = await fetch(`${call}/addToGroup`, {
                 method: "post",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ data: data, _id: info._id })
@@ -79,7 +80,7 @@ function GroupsPopup(info: Info) {
 
     const deleteGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
-        await fetch(`http://localhost:8000/deleteGroup`, {
+        await fetch(`${call}/deleteGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: data, _id: info._id })
@@ -96,7 +97,7 @@ function GroupsPopup(info: Info) {
     const leaveGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
         // console.log(data)
-        const result = await fetch(`http://localhost:8000/leaveGroup`, {
+        const result = await fetch(`${call}/leaveGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: data, _id: info._id })
@@ -120,7 +121,7 @@ function GroupsPopup(info: Info) {
     }
 
     const getUser = async (em: any) => {
-        const result = await fetch(`http://localhost:8000/getUser?doc=${em}`).then(async (res) => {
+        const result = await fetch(`${call}/getUser?doc=${em}`).then(async (res) => {
 
 
             const json = await res.json()
