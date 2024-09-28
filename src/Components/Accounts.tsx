@@ -1,6 +1,6 @@
 import Bar from "./InnerComponents/Bar";
 import "./Accounts.css"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,10 @@ function Accounts() {
     const [create, setCreate] = useState(false)
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        window.removeEventListener("beforeunload", () => { })
+    }, [])
 
     const logout = async (e: any) => {
         e.preventDefault()
