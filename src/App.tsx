@@ -9,15 +9,15 @@ function App() {
   const [panoCount, setCount] = useState(0);
 
   useEffect(() => {
-    window.addEventListener("beforeunload", (ev) => {
-      ev.preventDefault();
-      window.localStorage.setItem("Data", "")
-      return ev.returnValue = 'Are you sure you want to close?';
-    });
+    // window.addEventListener("beforeunload", (ev) => {
+    //   ev.preventDefault();
+    //   window.localStorage.setItem("Data", "")
+    //   return ev.returnValue = 'Are you sure you want to close?';
+    // });
 
-    return () => window.removeEventListener("beforeunload", () => {
-      console.log("removed")
-    })
+    // return () => window.removeEventListener("beforeunload", () => {
+    //   console.log("removed")
+    // })
   }, [])
 
   useEffect(() => {
