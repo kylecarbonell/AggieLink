@@ -160,12 +160,17 @@ function GroupsPopup(info: Info) {
                             {users.map((val: any, key: any) => {
                                 console.log("THIS IS VAL REPEAT")
                                 console.log(val)
-                                return (
-                                    <div key={key}>
-                                        <FaRegUserCircle style={{ color: "var(--blue)", fontSize: "3rem", marginRight: "2%" }}></FaRegUserCircle>
-                                        <p style={{ color: "var(--blue)" }}>{val.first + " " + val.last}</p>
-                                    </div>
-                                )
+                                if (val != null) {
+                                    return (
+                                        <div key={key}>
+                                            <FaRegUserCircle style={{ color: "var(--blue)", fontSize: "3rem", marginRight: "2%" }}></FaRegUserCircle>
+                                            <p style={{ color: "var(--blue)" }}>{val.first + " " + val.last}</p>
+                                        </div>
+                                    )
+                                } else {
+                                    return <div></div>
+                                }
+
                             })}
                         </div>
                         <div className="Groups-Popup-Button-Container" >
