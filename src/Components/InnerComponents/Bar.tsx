@@ -28,6 +28,7 @@ function Bar(props: Props) {
         className="Main-Page-Bar"
         style={{ backgroundColor: `var(--${props.color})` }}
       >
+        <img src="./aggie.jpg"></img>
         <h1
           style={{
             justifyContent: "left",
