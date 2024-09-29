@@ -12,6 +12,7 @@ import React from "react";
 import { call } from "../../Data/GroupData";
 
 interface props {
+  date: String;
   max_users: String;
   topic: String;
   title: String;
@@ -19,6 +20,7 @@ interface props {
   loc: String;
   users: Array<String>;
   end_time: String;
+  start_time: any
   _id: String;
 }
 
@@ -95,6 +97,7 @@ function GroupsButton(props: props) {
           >
             {props.loc}
           </h1>
+
           <h1
             style={{
               fontSize: "1rem",
@@ -108,7 +111,7 @@ function GroupsButton(props: props) {
         </div>
       </div>
 
-      <GroupsPopup show={showPopup} setShow={setPop} topic={props.topic} title={props.title} loc={props.loc} city={props.city} users={userInfo} max_users={props.max_users} end_time={props.end_time} _id={props._id} emails={props.users}></GroupsPopup>
+      <GroupsPopup show={showPopup} setShow={setPop} topic={props.topic} title={props.title} loc={props.loc} city={props.city} users={userInfo} max_users={props.max_users} end_time={props.end_time} _id={props._id} emails={props.users} start_time={props.start_time} date={props.date}></GroupsPopup>
     </>
   );
 }

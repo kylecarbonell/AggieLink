@@ -17,12 +17,12 @@ function Groups() {
   const filterType = useRef<String>();
 
   const getGroups = async () => {
-    console.log(call)
+    // console.log(call)
     if (filterType.current == "Select") {
       filterType.current = ""
     }
 
-    console.log("HEHRH")
+    // console.log("HEHRH")
 
     const data = await fetch(`${call}/getGroups?query=${filterType.current}`);
 
@@ -67,7 +67,7 @@ function Groups() {
             groups.length != 0 ?
               groups.map((val: any, key: any) => {
                 // console.log(groups)
-                return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id}></GroupsButton>
+                return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id} start_time={val.start_time} date={val.start_date}></GroupsButton>
               }) :
               <h1 style={{ width: "100%", position: "absolute", display: "flex", justifyContent: "center", alignItems: "center", color: "var(--white)" }}>No groups are currently available!</h1>
           }

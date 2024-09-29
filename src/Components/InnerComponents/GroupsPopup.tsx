@@ -11,8 +11,10 @@ interface Info {
     city: String;
     loc: String;
     users: Array<Object>;
-    end_time: String;
+    start_time: any
+    end_time: any;
     _id: String;
+    date: String,
     emails: Array<Object>
 }
 
@@ -122,8 +124,6 @@ function GroupsPopup(info: Info) {
 
     const getUser = async (em: any) => {
         const result = await fetch(`${call}/getUser?doc=${em}`).then(async (res) => {
-
-
             const json = await res.json()
             // console.log("USERS")
             // console.log(json)
@@ -141,15 +141,20 @@ function GroupsPopup(info: Info) {
                 <div className="Groups-Popup-Container">
                     <div className="Groups-Popup-Window">
                         <h1 id="Popup-Text" style={{ textAlign: "center" }}>{info.title}</h1>
+
                         <div className="Groups-Popup-Info">
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Location</h1>
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>City</h1>
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Members</h1>
-                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>End</h1>
+                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Date</h1>
+                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Time</h1>
+
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.loc}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.city}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{users.length || 0} / {info.max_users}</h1>
-                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.end_time}</h1>
+                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.date}</h1>
+                            <h1 style={{ fontSize: "0.9rem", fontWeight: "normal", color: "var(--blue)" }}>{info.start_time + " - " + info.end_time}</h1>
+
                         </div>
                         <div className="Groups-Popup-Users">
                             {users.map((val: any, key: any) => {

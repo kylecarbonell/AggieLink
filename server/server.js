@@ -196,12 +196,12 @@ app.post("/leaveGroup", async (req, res) => {
 
 app.get("/getLoc", async (req, res) => {
   const area = req.query.loc;
-  console.log(area);
+  // console.log(area);
   const r = await fetch(
     `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${area}&location=38.5449%2C-121.7405&radius=500&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
   )
     .then(async (result) => {
-      console.log(result.url);
+      // console.log(result.url);
       const json = await result.json();
       const pred = json.predictions;
       const temp = [];
@@ -220,7 +220,6 @@ app.get("/getLoc", async (req, res) => {
         ]);
         i += 1;
       }
-
 
       // console.log(teresuylmp);
       res.json(temp);

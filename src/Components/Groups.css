@@ -12,6 +12,10 @@
   display: none;
 }
 
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
 .Groups-Page-Container {
   background-color: var(--blue);
 
@@ -148,15 +152,17 @@
 }
 
 .Groups-Popup-Info{
-  width: 100%;
+  width: 98%;
   height: 20%;
   /* background-color: var(--blue  ); */
 
   display: grid;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(5, 20%);
   grid-template-rows: repeat(2, 50%);
 
   text-align: center;
+
+  margin-bottom: 2%;
 }
 
 .Groups-Popup-Button-Container{
