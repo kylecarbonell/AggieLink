@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# AggieLink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ever needed a volleyball team to play with? Or how a bout a study partner for your chemistry class? 
 
-Currently, two official plugins are available:
+With AggieLink, you will be able to find all types of UC Davis students with similar interests as you. AggieLink allows you to create and join different hangout groups ranging from boba runs to basketball open gym runs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+With the google maps api, you are able to easily choose locations to hangout and gather with your new friends.
 
-## Expanding the ESLint configuration
+So what are you waiting for, head to the link down below to create your first AggieLink group and start hanging out with your local UC Davis aggies.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to use AggieLink
 
-- Configure the top-level `parserOptions` property like this:
+To use AggieLink simply go to https://aggielink.vercel.app/
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. To get started with AggieLink, click the `Login` button and create an account
+2. Enter your email and password from your newly created account and log into the website
+3. Find an activity that interests you or use the filter button to show only sports, coffee, food, etc.
+4. Click an acitivity to view the location, date, and other members in the group.
+5. If no groups pique your interests, feel free to create your own group, just enter the event, location, number of people, and time range you want to have your group.
+6. Wait until the inteded start time for your group and travel to your group location.
+7. Have fun!
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Tools used to create AggieLink
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+AggieLink is a fully deployed website that uses `vercel.com` to host the front end and `render.com` to run the back end. The website uses a Non-relational document datebase called `MongoDB`, to save and read all data being used by AggieLink.
