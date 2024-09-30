@@ -14,17 +14,24 @@ function Groups() {
   const [groups, setGroups] = useState<any>([])
 
   const [tempType, setTempType] = useState("")
-  const filterType = useRef<String>();
+  const filterType = useRef<string>("");
 
   const getGroups = async () => {
+    let type = ""
     // console.log(call)
-    if (filterType.current == "Select") {
-      filterType.current = ""
+    // if (filterType.current == "Select") {
+    //   filterType.current = ""
+    // }
+
+    if (groupTypes.includes(filterType.current)) {
+      type = "Group"
+    } else {
+      type = "Event"
     }
 
     // console.log("HEHRH")
 
-    const data = await fetch(`${call}/getGroups?query=${filterType.current}`);
+    const data = await fetch(`${call}/getGroups?query=${filterType.current}&type=${type}`);
 
     if (!data.ok) {
       console.log("ERROR")
@@ -33,7 +40,6 @@ function Groups() {
 
     await data.json().then((json) => {
       setGroups(json)
-      // console.log(json)
     });
 
   };
@@ -74,7 +80,7 @@ function Groups() {
         </div>
       </div>
 
-      <CreateGroupPopup show={showCreate} setShow={setShowCreate} ></CreateGroupPopup>
+      <CreateGroupPopup show={showCreate} setShow={setShowCreate} getGroup={getGroups}></CreateGroupPopup>
       <div className="Groups-Popup-Container" style={showFilter ? { visibility: "visible" } : { visibility: "hidden" }}>
         <div className="Groups-Create-Group-Popup-Window" style={{ width: "40%", height: "60%" }}>
           <div className="Groups-Create-Group-Title">
@@ -96,6 +102,15 @@ function Groups() {
                   })
                 }
               </select>
+
+              <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
+                Event Type :
+              </h1>
+              <input className="Groups-Create-Group-Selects" onChange={
+                (e) => {
+                  setTempType(e.target.value)
+                }
+              } value={groupTypes.includes(tempType) || tempType == "Select" ? "" : tempType}></input>
             </div>
           </form>
           <div className="Groups-Create-Group-Buttons" style={{ fontSize: "2rem", borderTop: "1px solid var(--yellow)" }}>

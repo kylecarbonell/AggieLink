@@ -1,4 +1,3 @@
-
 import {
   FaHiking,
   FaTableTennis,
@@ -14,21 +13,11 @@ import { TbDotsCircleHorizontal } from "react-icons/tb";
 import { IoMdRestaurant } from "react-icons/io";
 import { IoFastFood } from "react-icons/io5";
 import { GiBoba } from "react-icons/gi";
-
-
-
-
-
-
-
 import { BiMath } from "react-icons/bi";
-
-
-
 
 import React from "react";
 
-export const groupTypes = ["Sports", "Study Groups", "Coffee", "Food"];
+export const groupTypes: Array<string> = ["Sports", "Study Groups", "Coffee", "Food", "Other"];
 
 
 
@@ -46,16 +35,16 @@ export const call = "https://aggielink.onrender.com";
 // export const call = "http://localhost:8000"
 
 export const events: Record<string, string[]> = {
-  Sports: ["Volleyball", "Basketball", "Hiking", "Pickleball", "Gym", "Other"],
+  Sports: ["Volleyball", "Basketball", "Hiking", "Pickleball", "Gym"],
   "Study Groups": [
     "Math",
     "English",
     "Science",
     "Engineering",
-    "Other",
   ],
   Coffee: ["Coffee Shop"],
   Food: ["Restaurant", "Boba", "Fast Food"],
+  Other: [],
 };
 
 function getIcon(event) {
@@ -92,7 +81,7 @@ function getIcon(event) {
 
 
 
-    case "Other":
+    default:
       return <TbDotsCircleHorizontal />
   }
 

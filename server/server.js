@@ -61,12 +61,16 @@ app.post("/deleteGroup", async (req, res) => {
 
 app.get("/getGroups", async (req, res) => {
   const group = req.query.query;
+  const type = req.query.type;
   let find = {};
 
   // console.log(group);
+  // console.log(type);
 
-  if (group != "undefined" && group != "") {
+  if (type == "Group") {
     find = { group_type: group };
+  } else {
+    find = { event_type: { $regex: group, $options: "i" } };
   }
 
   // console.log(find);
@@ -77,13 +81,21 @@ app.get("/getGroups", async (req, res) => {
 });
 
 app.post("/postGroup", async (req, res) => {
-  let doc = JSON.parse(req.query.doc);
-  const col = await db.collection("Groups");
+  let doc = req.body.doc;
 
-  //   console.log(doc);
-  let result = await col.insertOne(doc);
+  try {
+    const col = await db.collection("Groups");
 
-  res.send(result).status(200);
+    console.log("HEREHREH");
+    console.log(doc);
+
+    //   console.log(doc);
+    let result = await col.insertOne(doc);
+
+    res.send(result).status(200);
+  } catch (e) {
+    res.send(e.message).status(201);
+  }
 });
 
 app.get("/getAccount", async (req, res) => {

@@ -19,7 +19,7 @@
   background-color: var(--white);
 
   width: 100%;
-  height: 120%;
+  height: 100%;
 
   position: absolute;
 
@@ -84,7 +84,7 @@
 
 .Main-Page-Welcome-Text-Box {
   width: 50%;
-  height: 25%;
+  height: 30%;
 
   background-color: var(--blue);
   border-radius: 20px;

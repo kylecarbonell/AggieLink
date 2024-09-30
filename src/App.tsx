@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <div className="Page-Container">
-        <Bar color={"white"} text={"blue"}></Bar>
+        <Bar></Bar>
         <div className="Main-Page-Content">
           <div className="Main-Page-Image">
             <img
@@ -63,18 +63,26 @@ function App() {
                 fontSize: "1rem",
                 textAlign: "center",
                 width: "60%",
+
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               Welcome to UC Davis' AggieLink! With this website you are able to
               find any kind of group located in your area. Whether it be a
               sports group, a study group, and a friend to hang out with, this
               is the place to find it!
+
+
             </p>
+            <button style={{ backgroundColor: "var(--white)", color: "var(--blue)" }} onClick={() => {
+              window.open("https://github.com/kylecarbonell/AggieLink")
+            }}>Click here to view GitHub Page</button>
           </div>
         </div>
-        <div className="Main-Page-Footer">
+        {/* <div className="Main-Page-Footer">
           <h1>HI</h1>
-        </div>
+        </div> */}
       </div>
     </>
   );

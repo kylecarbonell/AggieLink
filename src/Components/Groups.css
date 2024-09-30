@@ -33,7 +33,7 @@
 
   flex-direction: column;
 
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .Groups-Create-Bar{
@@ -72,6 +72,9 @@
 
   justify-content: space-around;
   padding-top: 1%;
+
+  overflow-y: scroll;
+  padding-bottom: 2%;
 
 }
 

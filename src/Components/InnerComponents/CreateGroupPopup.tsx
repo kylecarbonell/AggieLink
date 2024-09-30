@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { call, cities, events, groupTypes } from "../../Data/GroupData";
 
 interface Props {
     show: Boolean;
     setShow: any;
+    getGroup: any
 }
 
 
@@ -13,12 +14,12 @@ function CreateGroupPopup(props: Props) {
     const [group, setGroup] = useState<string>(groupTypes[0]);
     const [event, setEvent] = useState<string>(events[group][0]);
     const [city, setCity] = useState<string>(cities[0]);
-    const [loc, setLoc] = useState<string>("");
     const [num, setNum] = useState("");
 
     const [inputLoc, setInputLoc] = useState("")
 
-    const [locOptions, setOptions] = useState<Array<String>>([])
+    const finalLoc = useRef("");
+    const [locOptions, setOptions] = useState<Array<String>>([]);
 
 
     const [startTime, setStart] = useState<any>({})
@@ -37,14 +38,17 @@ function CreateGroupPopup(props: Props) {
     }, [event])
 
     useEffect(() => {
-        console.log("CURRENT LOC")
-        console.log(loc)
-    }, [loc])
+        if (locOptions.length > 0) {
+            finalLoc.current = locOptions[0][0]
+        } else {
+            finalLoc.current = ""
+        }
+    }, [locOptions])
 
     async function GetLocation(area: string) {
         await fetch(`${call}/getLoc?loc=${area}`).then(async (result) => {
             const json = await result.json()
-            console.log(json)
+            // console.log(json)
             setOptions(json)
         })
     }
@@ -53,7 +57,6 @@ function CreateGroupPopup(props: Props) {
         props.setShow(false)
         setGroup(groupTypes[0])
         setCity(cities[0])
-        setLoc("")
         setNum("")
         setOptions([])
         setInputLoc("")
@@ -71,8 +74,9 @@ function CreateGroupPopup(props: Props) {
             return
         } 
 
-        let location = loc
-        if (location == "") {
+
+        console.log("THIS IS LOCATION NOW " + finalLoc.current)
+        if (finalLoc.current == "") {
             alert("Please enter a location")
             return
         }
@@ -87,7 +91,7 @@ function CreateGroupPopup(props: Props) {
             "group_type": group,
             "event_type": event,
             "city": city,
-            "location": location,
+            "location": finalLoc.current,
             "num_people": num,
             "start_time": startTime.time,
             "end_time": endTime.time,
@@ -96,16 +100,22 @@ function CreateGroupPopup(props: Props) {
             "users": [user?.email]
         }
 
-        // console.log(doc)
+        console.log(doc)
 
-        await fetch(`${call}/postGroup?doc=${JSON.stringify(doc)}`, {
+        await fetch(`${call}/postGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ doc: doc })
         }).then(async (res) => {
             const text = await res.text();
-            console.log(text)
-            resetValue()
-            // window.location.reload()
+
+            if (res.status == 200) {
+                console.log(text)
+                resetValue()
+                props.getGroup()
+            } else {
+                alert("Error creating your group")
+            }
         });
     }
 
@@ -136,19 +146,31 @@ function CreateGroupPopup(props: Props) {
                         </select>
                     </div>
 
+
+
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "event" }}>
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Event :
                         </h1>
-                        <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                            setEvent(e.target.value)
-                        }}>
-                            {
-                                events[group].map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
-                            }
-                        </select>
+                        {
+                            group == "Other" ?
+                                <input className="Groups-Create-Group-Selects" onChange={
+                                    (e) => {
+                                        setEvent(e.target.value)
+                                    }
+                                }></input>
+                                : 
+                                <select className="Groups-Create-Group-Selects" onChange={(e) => {
+                                    setEvent(e.target.value)
+                                }}>
+                                    {
+                                        events[group].map((val, key) => {
+                                            return <option value={val} key={key}>{val}</option>
+                                        })
+                                    }
+                                </select>
+                        }
+
                     </div>
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "city" }}>
@@ -159,7 +181,6 @@ function CreateGroupPopup(props: Props) {
                             setInputLoc(e.target.value)
                             GetLocation(e.target.value)
                             const temp = locOptions[0]
-                            setLoc(temp[0])
 
                             const city = temp[1].split(",")
 
@@ -174,7 +195,7 @@ function CreateGroupPopup(props: Props) {
                         {
                             locOptions.length != 0 &&
                             <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                                    setLoc(e.target.value)
+                                    // s(e.target.value)
                                 }} >
                                     {locOptions.map((val, key) => {
                                         return <option>{val}</option>
