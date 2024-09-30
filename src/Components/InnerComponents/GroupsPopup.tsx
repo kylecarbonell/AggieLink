@@ -33,8 +33,6 @@ function GroupsPopup(info: Info) {
     }, [])
 
     useEffect(() => {
-        // console.log("user in popup")
-        // setUser(info.users)
         setEmails(info.emails)
         getUser(info.emails)
     }, [info.show])
@@ -168,32 +166,36 @@ function GroupsPopup(info: Info) {
                                         </div>
                                     )
                                 } else {
-                                    return <div></div>
+                                    return <h1>Loading...</h1>
                                 }
-
                             })}
                         </div>
                         <div className="Groups-Popup-Button-Container" >
-
                             {
-
-                                (window.localStorage.getItem("Data") != "" && !window.localStorage.getItem("Data")?.includes(emails[0])) && <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
+                                (window.localStorage.getItem("Data") != "" &&
+                                    !window.localStorage.getItem("Data")?.includes(emails[0]))
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
                             }
 
                             {
-                                window.localStorage.getItem("Data")?.includes(emails[0]) && <button className="Groups-Popup-Close-Button" onClick={() => deleteGroup()}>Disband Group</button>
+                                window.localStorage.getItem("Data")?.includes(emails[0])
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => deleteGroup()}>Disband Group</button>
                             }
 
                             <button className="Groups-Popup-Close-Button" onClick={() => info.setShow(!info.show)}>Close</button>
                             {
-                                window.localStorage.getItem("Data") != "" && <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
+                                window.localStorage.getItem("Data") != ""
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
                             }
-
-
                         </div>
                         <div className="Groups-Popup-Button-Error">
                             {
-                                window.localStorage.getItem("Data") == "" && <p style={{ color: "black" }}>Please Login to join this group!</p>
+                                window.localStorage.getItem("Data") == ""
+                                &&
+                                <p style={{ color: "black" }}>Please Login to join this group!</p>
                             }
                             <p style={{ color: "black" }}>{error}</p>
                         </div>

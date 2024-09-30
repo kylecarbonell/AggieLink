@@ -8,8 +8,6 @@ interface Props {
     getGroup: any
 }
 
-
-
 function CreateGroupPopup(props: Props) {
     const [group, setGroup] = useState<string>(groupTypes[0]);
     const [event, setEvent] = useState<string>(events[group][0]);
@@ -48,7 +46,6 @@ function CreateGroupPopup(props: Props) {
     async function GetLocation(area: string) {
         await fetch(`${call}/getLoc?loc=${area}`).then(async (result) => {
             const json = await result.json()
-            // console.log(json)
             setOptions(json)
         })
     }
@@ -67,15 +64,12 @@ function CreateGroupPopup(props: Props) {
     async function submit() {
         let user = JSON.parse(window.localStorage.getItem("Data") || "{}")
 
-        // console.log(user)
-
         if (JSON.stringify(user) == "{}") {
             alert("Please log in to create a group!")
             return
         } 
 
-
-        console.log("THIS IS LOCATION NOW " + finalLoc.current)
+        // console.log("THIS IS LOCATION NOW " + finalLoc.current)
         if (finalLoc.current == "") {
             alert("Please enter a location")
             return
@@ -85,7 +79,6 @@ function CreateGroupPopup(props: Props) {
             alert("Please enter a number of people greater than 2")
             return
         }
-
 
         let doc = {
             "group_type": group,

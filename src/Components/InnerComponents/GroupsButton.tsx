@@ -27,12 +27,7 @@ function GroupsButton(props: props) {
 
   const getUser = async () => {
     const result = await fetch(`${call}/getUser?doc=${props.users}`).then(async (res) => {
-
-
       const json = await res.json()
-      // console.log("USERS")
-      // console.log(json)
-
       setUserInfo(json)
     });
 

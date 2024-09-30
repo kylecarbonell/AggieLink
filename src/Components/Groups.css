@@ -57,6 +57,9 @@
   background-color: var(--yellow);
   width: 20%;
   height: 70%;
+
+  color: var(--darkBlue);
+  font-size: 1rem;
 }
 
 .Groups-Buttons-Container {
@@ -105,8 +108,9 @@
   background-color: var(--white);
   width: 70%;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 30% 20% 20% 20%;
 
   padding-left: 2%;
 
@@ -142,7 +146,7 @@
 
 .Groups-Popup-Window{
   width: 50%;
-  height: 70%;
+  height: 75%;
 
   background-color: var(--white);
 

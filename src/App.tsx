@@ -8,6 +8,7 @@ function App() {
   const imgCount = useRef<number>(0);
   const [panoCount, setCount] = useState(0);
 
+  //Creates timer to change panoramic picture
   useEffect(() => {
     const picInt = setInterval(() => {
       if (imgCount.current == 4) {
@@ -59,17 +60,12 @@ function App() {
               find any kind of group located in your area. Whether it be a
               sports group, a study group, and a friend to hang out with, this
               is the place to find it!
-
-
             </p>
             <button style={{ backgroundColor: "var(--white)", color: "var(--blue)" }} onClick={() => {
               window.open("https://github.com/kylecarbonell/AggieLink")
             }}>Click here to view GitHub Page</button>
           </div>
         </div>
-        {/* <div className="Main-Page-Footer">
-          <h1>HI</h1>
-        </div> */}
       </div>
     </>
   );

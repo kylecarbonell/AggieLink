@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import CreateGroupPopup from "./InnerComponents/CreateGroupPopup";
 import React from "react";
 import { call, groupTypes } from "../Data/GroupData";
+import FilterGroupPopup from "./InnerComponents/FilterGroupPopup";
 
 function Groups() {
 
@@ -16,12 +17,13 @@ function Groups() {
   const [tempType, setTempType] = useState("")
   const filterType = useRef<string>("");
 
+  /***
+   * Makes a call to the backend to get available groups from the database.
+   * Uses if statements to check if there contains a "filter" query
+   * Updates the groups state to show available groups
+   */
   const getGroups = async () => {
     let type = ""
-    // console.log(call)
-    // if (filterType.current == "Select") {
-    //   filterType.current = ""
-    // }
 
     if (groupTypes.includes(filterType.current)) {
       type = "Group"
@@ -29,10 +31,7 @@ function Groups() {
       type = "Event"
     }
 
-    // console.log("HEHRH")
-
     const data = await fetch(`${call}/getGroups?query=${filterType.current}&type=${type}`);
-
     if (!data.ok) {
       console.log("ERROR")
       return
@@ -44,10 +43,16 @@ function Groups() {
 
   };
 
+  /***
+   * Makes initial call to get available groups on render
+   */
   useEffect(() => {
     getGroups()
   }, [])
 
+  /***
+   * Creates a timer to reload and get new groups
+   */
   useEffect(() => {
     const groupInt = setInterval(() => {
       // console.log("tick")
@@ -65,71 +70,24 @@ function Groups() {
       <div className="Groups-Page-Container">
         <Bar ></Bar>
         <div className="Groups-Create-Bar">
-          <button className="Groups-Create-Bar-Button" onClick={() => { setFilter(true) }}>Filter / Sort</button>
-          <button className="Groups-Create-Bar-Button" onClick={() => setShowCreate(true)}>Create Group</button>
+          <button onClick={() => setFilter(true)}>Filter</button>
+          <button onClick={() => setShowCreate(true)}>Create Group</button>
         </div>
         <div className="Groups-Buttons-Container">
           {
             groups.length != 0 ?
               groups.map((val: any, key: any) => {
-                // console.log(groups)
                 return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id} start_time={val.start_time} date={val.start_date} event={val.event_type}></GroupsButton>
               }) :
-              <h1 style={{ width: "100%", position: "absolute", display: "flex", justifyContent: "center", alignItems: "center", color: "var(--white)" }}>No groups are currently available!</h1>
+              <>
+                <h1 style={{ width: "100%", position: "absolute", display: "flex", justifyContent: "center", alignItems: "center", color: "var(--white)" }}>No {filterType.current} groups are currently available!</h1>
+              </>
           }
         </div>
       </div>
 
       <CreateGroupPopup show={showCreate} setShow={setShowCreate} getGroup={getGroups}></CreateGroupPopup>
-      <div className="Groups-Popup-Container" style={showFilter ? { visibility: "visible" } : { visibility: "hidden" }}>
-        <div className="Groups-Create-Group-Popup-Window" style={{ width: "40%", height: "60%" }}>
-          <div className="Groups-Create-Group-Title">
-            <h1 style={{ fontSize: "2rem", color: "var(--blue)" }}>Filter Group</h1>
-
-          </div>
-          <form className="Groups-Create-Group-Dropdowns">
-            <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "group" }}>
-              <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
-                Group Type :
-              </h1>
-              <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                setTempType(e.target.value)
-              }}>
-                <option>Select</option>
-                {
-                  groupTypes.map((val, key) => {
-                    return <option value={val} key={key} >{val}</option>
-                  })
-                }
-              </select>
-
-              <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
-                Event Type :
-              </h1>
-              <input className="Groups-Create-Group-Selects" onChange={
-                (e) => {
-                  setTempType(e.target.value)
-                }
-              } value={groupTypes.includes(tempType) || tempType == "Select" ? "" : tempType}></input>
-            </div>
-          </form>
-          <div className="Groups-Create-Group-Buttons" style={{ fontSize: "2rem", borderTop: "1px solid var(--yellow)" }}>
-            <div style={{ width: "20%", fontSize: "1rem" }} onClick={() => {
-              filterType.current = ""
-              setFilter(false)
-            }}>Clear Filters</div>
-            <div style={{ width: "20%", fontSize: "1rem" }} onClick={() => {
-              setFilter(false)
-            }}>Cancel</div>
-            <div style={{ width: "20%", fontSize: "0.8rem" }} onClick={() => {
-              filterType.current = tempType
-              getGroups()
-              setFilter(false)
-            }}>Filter Groups</div>
-          </div>
-        </div>
-
-      </div>
+      <FilterGroupPopup showFilter={showFilter} setFilter={setFilter} getGroups={getGroups} filterType={filterType} tempType={tempType} setTempType={setTempType}></FilterGroupPopup>
     </>
   );
 }
