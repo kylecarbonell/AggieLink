@@ -11,6 +11,10 @@
   display: none;
 }
 
+*{
+  font-family: "aileron";
+}
+
 .Page-Container {
   background-color: var(--white);
 
@@ -44,12 +48,15 @@
 
   align-items: center;
   justify-content: center;
+
+  color: var(--blue)
 }
 
 .Main-Page-Bar >img{
   height: 100%;
   /* background-color: black; */
   object-fit: contain;
+  /* font-family: ; */
 }
 
 .Main-Page-Content {
@@ -122,4 +129,10 @@
 
   border-radius: 10px;
   margin-top: 10%;
+
+}
+
+@font-face {
+  font-family: aileron;
+  src: url(./aileron_0102/Aileron-Regular.otf);
 }

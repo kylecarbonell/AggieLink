@@ -1,15 +1,9 @@
 import "../Groups.css";
 
-import { FiBookOpen } from "react-icons/fi";
-import { TfiBasketball } from "react-icons/tfi";
-import { IoFastFoodOutline } from "react-icons/io5";
-import { FiCoffee } from "react-icons/fi";
-
-
 import GroupsPopup from "./GroupsPopup";
 import { useEffect, useState } from "react";
 import React from "react";
-import { call } from "../../Data/GroupData";
+import getIcon, { call } from "../../Data/GroupData";
 
 interface props {
   date: String;
@@ -21,6 +15,7 @@ interface props {
   users: Array<String>;
   end_time: String;
   start_time: any
+  event: String,
   _id: String;
 }
 
@@ -29,17 +24,6 @@ function GroupsButton(props: props) {
   const [showPopup, setPop] = useState(false)
   const [userInfo, setUserInfo] = useState<any>([])
 
-  function getTopic(topic: String) {
-    if (topic == "Study Groups") {
-      return <FiBookOpen></FiBookOpen>;
-    } else if (topic == "Sports") {
-      return <TfiBasketball></TfiBasketball>;
-    } else if (topic == "Coffee") {
-      return <FiCoffee />
-    } else if (topic == "Food") {
-      return <IoFastFoodOutline />
-    }
-  }
 
   const getUser = async () => {
     const result = await fetch(`${call}/getUser?doc=${props.users}`).then(async (res) => {
@@ -66,7 +50,7 @@ function GroupsButton(props: props) {
   return (
     <>
       <div className="Groups-Button" onClick={() => onClick()}>
-        <div className="Groups-Button-Icon" style={{ color: "var(--blue)" }}>{getTopic(props.topic)}</div>
+        <div className="Groups-Button-Icon" style={{ color: "var(--blue)", fontSize: "4rem" }}>{getIcon(props.event)}</div>
         <div className="Groups-Button-Description">
           <h1
             style={{

@@ -57,7 +57,7 @@ function Groups() {
   return (
     <>
       <div className="Groups-Page-Container">
-        <Bar color={"white"} text={"blue"}></Bar>
+        <Bar ></Bar>
         <div className="Groups-Create-Bar">
           <button className="Groups-Create-Bar-Button" onClick={() => { setFilter(true) }}>Filter / Sort</button>
           <button className="Groups-Create-Bar-Button" onClick={() => setShowCreate(true)}>Create Group</button>
@@ -67,7 +67,7 @@ function Groups() {
             groups.length != 0 ?
               groups.map((val: any, key: any) => {
                 // console.log(groups)
-                return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id} start_time={val.start_time} date={val.start_date}></GroupsButton>
+                return <GroupsButton key={key} topic={val.group_type} title={val.event_type} loc={val.location} city={val.city} users={val.users} max_users={val.num_people} end_time={val.end_time} _id={val._id} start_time={val.start_time} date={val.start_date} event={val.event_type}></GroupsButton>
               }) :
               <h1 style={{ width: "100%", position: "absolute", display: "flex", justifyContent: "center", alignItems: "center", color: "var(--white)" }}>No groups are currently available!</h1>
           }
