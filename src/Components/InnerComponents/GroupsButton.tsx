@@ -25,6 +25,10 @@ function GroupsButton(props: props) {
   const [userInfo, setUserInfo] = useState<any>([])
 
 
+  /**
+   * Gets all users in the "users" array of the current group
+   * and updates the state to be displayed on the frontend
+   */
   const getUser = async () => {
     const result = await fetch(`${call}/getUser?doc=${props.users}`).then(async (res) => {
       const json = await res.json()

@@ -43,6 +43,13 @@ function CreateGroupPopup(props: Props) {
         }
     }, [locOptions])
 
+    /**
+     * Makes a get request to the backend to 
+     * get a list of possible location the user could be searching
+     * 
+     * Updates the state to display the options on the frontend
+     * @param area - the string used to predict location
+     */
     async function GetLocation(area: string) {
         await fetch(`${call}/getLoc?loc=${area}`).then(async (result) => {
             const json = await result.json()
@@ -50,6 +57,9 @@ function CreateGroupPopup(props: Props) {
         })
     }
 
+    /**
+     * Resets all state used in the create popup
+     */
     function resetValue() {
         props.setShow(false)
         setGroup(groupTypes[0])
@@ -61,6 +71,14 @@ function CreateGroupPopup(props: Props) {
         setEndValue("")
     }
 
+    /**
+     * First ensures that a user is currently logged in.
+     * 
+     * Checks the validity of each input
+     * Makes a post request to the backend to add the group
+     * to the "Groups" collection in the database.
+     *  
+     */
     async function submit() {
         let user = JSON.parse(window.localStorage.getItem("Data") || "{}")
 

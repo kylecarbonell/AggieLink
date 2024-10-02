@@ -17,6 +17,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
+/**
+ * Hashes the string to add security to the password.
+ * Uses a simple letter -> ASCII value hash.
+ * 
+ * New hash password is later stored in the database under the users document
+ * 
+ * @param {*} str 
+ * @returns - hashed version of the password
+ */
 const encode = (str) => {
   let i = 0;
   let hashString = "";
@@ -31,6 +40,15 @@ const encode = (str) => {
   return hashString;
 };
 
+/**
+ * Unhashes the given string (password).
+ * Uses the reverse algorithm of the hash to view the "real" password
+ * 
+ * Used to check if 2 passwords are correct during a login.
+ * 
+ * @param {*} str 
+ * @returns - Unhashed password
+ */
 const decode = (str) => {
   let i = 0;
   let letter = "";
@@ -49,6 +67,10 @@ const decode = (str) => {
   return password;
 };
 
+/**
+ * Deletes the group from the mongoDB database
+ * Uses a query to find group using its ID
+ */
 app.post("/deleteGroup", async (req, res) => {
   const id = req.body._id;
   console.log(id);
@@ -59,6 +81,15 @@ app.post("/deleteGroup", async (req, res) => {
   res.status(200).send("GOOD");
 });
 
+/**
+ * Makes a call to the mongoDB database to get all current 
+ * groups that are available.
+ * 
+ * If given a query, the mongodb collection will return the groups
+ * that follow that query.
+ * 
+ * The query can be the type of group or a search that follows the group event
+ */
 app.get("/getGroups", async (req, res) => {
   const group = req.query.query;
   const type = req.query.type;
@@ -80,6 +111,9 @@ app.get("/getGroups", async (req, res) => {
   res.json(results).status(200);
 });
 
+/**
+ * Adds a new group document to the "Groups" collection
+ */
 app.post("/postGroup", async (req, res) => {
   let doc = req.body.doc;
 
@@ -98,6 +132,13 @@ app.post("/postGroup", async (req, res) => {
   }
 });
 
+/**
+ * Makes a call to the mongoDB database, finds the user
+ * using the email from the request.
+ * 
+ * If a user with the email is found, decodes and compares 
+ * the password in the database to the password sent through the request
+ */
 app.get("/getAccount", async (req, res) => {
   let doc = JSON.parse(req.query.data);
 
@@ -120,8 +161,14 @@ app.get("/getAccount", async (req, res) => {
   res.send(user);
 });
 
+/**
+ * Adds a new user document to the "users" collection. 
+ * 
+ * Ensures that the email is not taken, by using a query to search for any
+ * existing documents with that email.
+ * 
+ */
 app.post("/createAccount", async (req, res) => {
-  console.log("HI");
   let doc = req.body.data;
   doc.pw = encode(doc.pw);
   console.log(doc);
@@ -129,6 +176,7 @@ app.post("/createAccount", async (req, res) => {
   let col = db.collection("Users");
 
   let check = await col.find({ email: doc.email }).toArray();
+
   if (check.length > 0) {
     res.status(201).send();
     return;
@@ -138,6 +186,12 @@ app.post("/createAccount", async (req, res) => {
   res.send(result).status(200);
 });
 
+/**
+ * Uses the list of emails from the request call.
+ *
+ * Gets the full data object from the "Users" collection
+ * and sends it back to the request call
+ */
 app.get("/getUser", async (req, res) => {
   // console.log("HERE");
   let doc = req.query.doc.split(",");
@@ -150,10 +204,12 @@ app.get("/getUser", async (req, res) => {
     fin.push(temp);
   }
 
-  // console.log(fin);/\
   res.status(200).json(fin);
 });
 
+/**
+ * Adds user's email to the "Users" array in the group
+ */
 app.post("/addToGroup", async (req, res) => {
   const data = req.body.data;
   const id = new ObjectId(req.body._id);
@@ -180,6 +236,9 @@ app.post("/addToGroup", async (req, res) => {
   res.status(200).json(newDoc.users);
 });
 
+/**
+ * Deletes user's email from the "Users" array in the current group
+ */
 app.post("/leaveGroup", async (req, res) => {
   const data = req.body.data;
   const id = new ObjectId(req.body._id);
@@ -206,6 +265,15 @@ app.post("/leaveGroup", async (req, res) => {
   res.status(200).json(newDoc.users);
 });
 
+/**
+ * Makes a call to the "Google Maps API" to make a prediction
+ * based on the string passed to the request. The API will return
+ * a list of predictions
+ *
+ * The API is set to search for locations within a 500 meter radius of Davis
+ *
+ * @params area - represents the search string or the location name to be searched
+ */
 app.get("/getLoc", async (req, res) => {
   const area = req.query.loc;
   // console.log(area);
@@ -233,14 +301,11 @@ app.get("/getLoc", async (req, res) => {
         i += 1;
       }
 
-      // console.log(teresuylmp);
       res.json(temp);
     })
     .catch((e) => {
       console.log(e);
     });
-
-  // res.send();
 });
 
 async function start() {

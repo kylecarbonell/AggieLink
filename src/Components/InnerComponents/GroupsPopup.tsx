@@ -46,6 +46,11 @@ function GroupsPopup(info: Info) {
     }, [emails])
 
 
+    /**
+     * Makes a post request to the backend to 
+     * add the current user in "localStorage" 
+     * to the "users" array in the group
+     */
     const joinGroup = async () => {
         if (users.length != info.max_users) {
             const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
@@ -78,6 +83,11 @@ function GroupsPopup(info: Info) {
 
     }
 
+
+    /**
+     * Makes a post request to the backend to find the current group 
+     * and removes it from the collection
+     */
     const deleteGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
         await fetch(`${call}/deleteGroup`, {
@@ -93,7 +103,11 @@ function GroupsPopup(info: Info) {
     }
 
 
-
+    /**
+     * Creates a post request to the backend
+     * and deletes the current user from the 
+     * "users" array in the current group
+     */
     const leaveGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
         // console.log(data)
@@ -110,6 +124,7 @@ function GroupsPopup(info: Info) {
             console.log("POPUP JOIN GROUP JSON")
             console.log(json)
 
+
             if (json.length == 0 || json.length >= info.max_users) {
                 deleteGroup()
             } else {
@@ -120,11 +135,15 @@ function GroupsPopup(info: Info) {
         })
     }
 
+    /**
+     * Gets all users in the "users" array of the current group
+     * and updates the state to be displayed on the frontend
+     */
     const getUser = async (em: any) => {
         const result = await fetch(`${call}/getUser?doc=${em}`).then(async (res) => {
             const json = await res.json()
             // console.log("USERS")
-            // console.log(json)
+            console.log(json)
 
             setUser(json)
         });
@@ -156,8 +175,8 @@ function GroupsPopup(info: Info) {
                         </div>
                         <div className="Groups-Popup-Users">
                             {users.map((val: any, key: any) => {
-                                console.log("THIS IS VAL REPEAT")
-                                console.log(val)
+                                // console.log("THIS IS VAL REPEAT")
+                                // console.log(val)
                                 if (val != null) {
                                     return (
                                         <div key={key}>
