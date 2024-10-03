@@ -1,28 +1,30 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import { cities, events, groupTypes } from "../../Data/GroupData";
+import { call, cities, events, groupTypes } from "../../Data/GroupData";
 
 interface Props {
     show: Boolean;
     setShow: any;
+    getGroup: any
 }
-
-
 
 function CreateGroupPopup(props: Props) {
     const [group, setGroup] = useState<string>(groupTypes[0]);
     const [event, setEvent] = useState<string>(events[group][0]);
     const [city, setCity] = useState<string>(cities[0]);
-    const [loc, setLoc] = useState<string>("");
     const [num, setNum] = useState("");
 
     const [inputLoc, setInputLoc] = useState("")
 
-    const [locOptions, setOptions] = useState<Array<String>>([])
+    const finalLoc = useRef("");
+    const [locOptions, setOptions] = useState<Array<String>>([]);
 
 
-    const [startTime, setStart] = useState<any>([1, "PM"])
-    const [endTime, setEnd] = useState<any>([2, "PM"])
+    const [startTime, setStart] = useState<any>({})
+    const [endTime, setEnd] = useState<any>({})
+
+    const [start, setStartValue] = useState('')
+    const [end, setEndValue] = useState('')
 
 
     useEffect(() => {
@@ -34,40 +36,59 @@ function CreateGroupPopup(props: Props) {
     }, [event])
 
     useEffect(() => {
-        console.log("CURRENT LOC")
-        console.log(loc)
-    }, [loc])
+        if (locOptions.length > 0) {
+            finalLoc.current = locOptions[0][0]
+        } else {
+            finalLoc.current = ""
+        }
+    }, [locOptions])
 
+    /**
+     * Makes a get request to the backend to 
+     * get a list of possible location the user could be searching
+     * 
+     * Updates the state to display the options on the frontend
+     * @param area - the string used to predict location
+     */
     async function GetLocation(area: string) {
-        await fetch(`http://localhost:8000/getLoc?loc=${area}`).then(async (result) => {
+        await fetch(`${call}/getLoc?loc=${area}`).then(async (result) => {
             const json = await result.json()
-            console.log(json)
             setOptions(json)
         })
     }
 
+    /**
+     * Resets all state used in the create popup
+     */
     function resetValue() {
         props.setShow(false)
         setGroup(groupTypes[0])
         setCity(cities[0])
-        setLoc("")
         setNum("")
         setOptions([])
         setInputLoc("")
+        setStartValue("")
+        setEndValue("")
     }
 
+    /**
+     * First ensures that a user is currently logged in.
+     * 
+     * Checks the validity of each input
+     * Makes a post request to the backend to add the group
+     * to the "Groups" collection in the database.
+     *  
+     */
     async function submit() {
         let user = JSON.parse(window.localStorage.getItem("Data") || "{}")
-
-        // console.log(user)
 
         if (JSON.stringify(user) == "{}") {
             alert("Please log in to create a group!")
             return
         } 
 
-        let location = loc
-        if (location == "") {
+        // console.log("THIS IS LOCATION NOW " + finalLoc.current)
+        if (finalLoc.current == "") {
             alert("Please enter a location")
             return
         }
@@ -77,28 +98,35 @@ function CreateGroupPopup(props: Props) {
             return
         }
 
-
         let doc = {
             "group_type": group,
             "event_type": event,
             "city": city,
-            "location": location,
+            "location": finalLoc.current,
             "num_people": num,
-            "start_time": startTime[0] + startTime[1],
-            "end_time": endTime[0] + endTime[1],
+            "start_time": startTime.time,
+            "end_time": endTime.time,
+            "start_date": startTime.date,
+            "end_date": endTime.date,  
             "users": [user?.email]
         }
 
-        // console.log(doc)
+        console.log(doc)
 
-        await fetch(`http://localhost:8000/postGroup?doc=${JSON.stringify(doc)}`, {
+        await fetch(`${call}/postGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ doc: doc })
         }).then(async (res) => {
             const text = await res.text();
-            console.log(text)
-            resetValue()
-            // window.location.reload()
+
+            if (res.status == 200) {
+                console.log(text)
+                resetValue()
+                props.getGroup()
+            } else {
+                alert("Error creating your group")
+            }
         });
     }
 
@@ -129,19 +157,31 @@ function CreateGroupPopup(props: Props) {
                         </select>
                     </div>
 
+
+
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "event" }}>
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Event :
                         </h1>
-                        <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                            setEvent(e.target.value)
-                        }}>
-                            {
-                                events[group].map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
-                            }
-                        </select>
+                        {
+                            group == "Other" ?
+                                <input className="Groups-Create-Group-Selects" onChange={
+                                    (e) => {
+                                        setEvent(e.target.value)
+                                    }
+                                }></input>
+                                : 
+                                <select className="Groups-Create-Group-Selects" onChange={(e) => {
+                                    setEvent(e.target.value)
+                                }}>
+                                    {
+                                        events[group].map((val, key) => {
+                                            return <option value={val} key={key}>{val}</option>
+                                        })
+                                    }
+                                </select>
+                        }
+
                     </div>
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "city" }}>
@@ -152,8 +192,10 @@ function CreateGroupPopup(props: Props) {
                             setInputLoc(e.target.value)
                             GetLocation(e.target.value)
                             const temp = locOptions[0]
-                            setLoc(temp[0])
-                            setCity(temp[1].substring(2))
+
+                            const city = temp[1].split(",")
+
+                            setCity(city[1] + "," + city[2])
 
 
                         }} value={inputLoc}>
@@ -164,7 +206,7 @@ function CreateGroupPopup(props: Props) {
                         {
                             locOptions.length != 0 &&
                             <select className="Groups-Create-Group-Selects" onChange={(e) => {
-                                    setLoc(e.target.value)
+                                    // s(e.target.value)
                                 }} >
                                     {locOptions.map((val, key) => {
                                         return <option>{val}</option>
@@ -190,42 +232,48 @@ function CreateGroupPopup(props: Props) {
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             Start Time :
                         </h1>
-                        <select className="Groups-Create-Group-Selects " value={startTime[0]} style={{ width: "60%" }} onChange={(e) => {
-                            setStart([Number.parseInt(e.target.value), startTime[1]])
-                        }}>
-                            {
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
+                        <input type="datetime-local" className="Groups-Create-Group-Selects" onChange={(e) => {
+                            setStartValue(e.target.value)
+                            const newDate = new Date(e.target.value)
+                            const time = newDate.toLocaleTimeString().split(":");
+                            // console.log(time[2].substring(2))
+
+                            const date = newDate.toLocaleDateString();
+
+                            const json = {
+                                time: time[0] + ":" + time[1] + time[2].substring(2),
+                                date: date
                             }
-                        </select>
-                        <select className="Groups-Create-Group-Selects" value={startTime[1]} style={{ width: "30%", marginLeft: "2%" }} onChange={(e) => {
-                            setStart([startTime[0], e.target.value])
-                        }}>
-                            <option value={"AM"}>AM</option>
-                            <option value={"PM"}>PM</option>
-                        </select>
+
+                            console.log(start)
+                            setStart(json)
+
+                        }} value={start}></input>
                     </div>
 
                     <div className="Groups-Create-Group-Select-Container" style={{ gridArea: "time2" }} >
                         <h1 style={{ fontSize: "1rem", color: "var(--blue)" }}>
                             End Time :
                         </h1>
-                        <select className="Groups-Create-Group-Selects " value={endTime[0]} style={{ width: "60%" }} onChange={(e) => {
-                            setEnd([Number.parseInt(e.target.value), endTime[1]])
-                        }} >
-                            {
-                                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((val, key) => {
-                                    return <option value={val} key={key}>{val}</option>
-                                })
-                            }
-                        </select>
-                        <select className="Groups-Create-Group-Selects" value={endTime[1]} style={{ width: "30%", marginLeft: "2%" }} onChange={(e) => {
-                            setEnd([endTime[0], e.target.value])
-                        }}>
-                            <option value={"AM"}>AM</option>
-                            <option value={"PM"}>PM</option>
-                        </select>
+                        <input type="datetime-local" className="Groups-Create-Group-Selects" style={{ color: "var(--blue)", colorScheme: "dark" }}
+                            onChange={(e) => {
+                                setEndValue(e.target.value)
+                                const newDate = new Date(e.target.value)
+                                const time = newDate.toLocaleTimeString().split(":");
+                                // console.log(time[2].substring(2))
+
+                                const date = newDate.toLocaleDateString();
+
+                                const json = {
+                                    time: time[0] + ":" + time[1] + time[2].substring(2),
+                                    date: date
+                                }
+
+                                console.log(json)
+                                setEnd(json)
+                            }}
+                            value={end}
+                        ></input>
                     </div>
 
                 </form>

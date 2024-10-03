@@ -1,16 +1,12 @@
 import "../Groups.css";
 
-import { FiBookOpen } from "react-icons/fi";
-import { TfiBasketball } from "react-icons/tfi";
-import { IoFastFoodOutline } from "react-icons/io5";
-import { FiCoffee } from "react-icons/fi";
-
-
 import GroupsPopup from "./GroupsPopup";
 import { useEffect, useState } from "react";
 import React from "react";
+import getIcon, { call } from "../../Data/GroupData";
 
 interface props {
+  date: String;
   max_users: String;
   topic: String;
   title: String;
@@ -18,6 +14,8 @@ interface props {
   loc: String;
   users: Array<String>;
   end_time: String;
+  start_time: any
+  event: String,
   _id: String;
 }
 
@@ -26,26 +24,14 @@ function GroupsButton(props: props) {
   const [showPopup, setPop] = useState(false)
   const [userInfo, setUserInfo] = useState<any>([])
 
-  function getTopic(topic: String) {
-    if (topic == "Study Groups") {
-      return <FiBookOpen></FiBookOpen>;
-    } else if (topic == "Sports") {
-      return <TfiBasketball></TfiBasketball>;
-    } else if (topic == "Coffee") {
-      return <FiCoffee />
-    } else if (topic == "Food") {
-      return <IoFastFoodOutline />
-    }
-  }
 
+  /**
+   * Gets all users in the "users" array of the current group
+   * and updates the state to be displayed on the frontend
+   */
   const getUser = async () => {
-    const result = await fetch(`http://localhost:8000/getUser?doc=${props.users}`).then(async (res) => {
-
-
+    const result = await fetch(`${call}/getUser?doc=${props.users}`).then(async (res) => {
       const json = await res.json()
-      // console.log("USERS")
-      // console.log(json)
-
       setUserInfo(json)
     });
 
@@ -63,7 +49,7 @@ function GroupsButton(props: props) {
   return (
     <>
       <div className="Groups-Button" onClick={() => onClick()}>
-        <div className="Groups-Button-Icon" style={{ color: "var(--blue)" }}>{getTopic(props.topic)}</div>
+        <div className="Groups-Button-Icon" style={{ color: "var(--blue)", fontSize: "4rem" }}>{getIcon(props.event)}</div>
         <div className="Groups-Button-Description">
           <h1
             style={{
@@ -94,6 +80,7 @@ function GroupsButton(props: props) {
           >
             {props.loc}
           </h1>
+
           <h1
             style={{
               fontSize: "1rem",
@@ -107,7 +94,7 @@ function GroupsButton(props: props) {
         </div>
       </div>
 
-      <GroupsPopup show={showPopup} setShow={setPop} topic={props.topic} title={props.title} loc={props.loc} city={props.city} users={userInfo} max_users={props.max_users} end_time={props.end_time} _id={props._id} emails={props.users}></GroupsPopup>
+      <GroupsPopup show={showPopup} setShow={setPop} topic={props.topic} title={props.title} loc={props.loc} city={props.city} users={userInfo} max_users={props.max_users} end_time={props.end_time} _id={props._id} emails={props.users} start_time={props.start_time} date={props.date}></GroupsPopup>
     </>
   );
 }

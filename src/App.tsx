@@ -8,19 +8,7 @@ function App() {
   const imgCount = useRef<number>(0);
   const [panoCount, setCount] = useState(0);
 
-  useEffect(() => {
-    // window.onbeforeunload = () => { }
-    // window.addEventListener("beforeunload", (ev) => {
-    //   ev.preventDefault();
-    //   window.localStorage.setItem("Data", "")
-    //   return ev.returnValue = 'Are you sure you want to close?';
-    // });
-
-    // return () => window.removeEventListener("beforeunload", () => {
-    //   console.log("removed")
-    // })
-  }, [])
-
+  //Creates timer to change panoramic picture
   useEffect(() => {
     const picInt = setInterval(() => {
       if (imgCount.current == 4) {
@@ -39,7 +27,7 @@ function App() {
   return (
     <>
       <div className="Page-Container">
-        <Bar color={"white"} text={"blue"}></Bar>
+        <Bar></Bar>
         <div className="Main-Page-Content">
           <div className="Main-Page-Image">
             <img
@@ -63,6 +51,9 @@ function App() {
                 fontSize: "1rem",
                 textAlign: "center",
                 width: "60%",
+
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               Welcome to UC Davis' AggieLink! With this website you are able to
@@ -70,10 +61,10 @@ function App() {
               sports group, a study group, and a friend to hang out with, this
               is the place to find it!
             </p>
+            <button style={{ backgroundColor: "var(--white)", color: "var(--blue)" }} onClick={() => {
+              window.open("https://github.com/kylecarbonell/AggieLink")
+            }}>Click here to view GitHub Page</button>
           </div>
-        </div>
-        <div className="Main-Page-Footer">
-          <h1>HI</h1>
         </div>
       </div>
     </>

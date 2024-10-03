@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
+import { call } from "../Data/GroupData";
 
 function Accounts() {
-
-
     const [first, setFirst] = useState("");
     const [last, setLast] = useState("");
     const [email, setEmail] = useState("");
@@ -17,12 +16,23 @@ function Accounts() {
 
     const navigate = useNavigate();
 
+    /**
+     * Resets the users local storage, simulating a "Logout" function
+     */
     const logout = () => {
         console.log("CHANGED AND LOGGED")
         navigate("/")
         window.localStorage.setItem("Data", "")
     }
 
+    /**
+     * Creates and adds a new user to the database.
+     * Submits a post request to the backend that will
+     * add a new account to the "Users" collection
+     * 
+     * On a successful post request, the function will call the 
+     * onSubmit() function to log the user in.
+     */
     const submitCreate = async (e: any) => {
         if (email == "" || pw == "" || first == "" || last == "") {
             alert("Please fill in all boxes")
@@ -35,19 +45,22 @@ function Accounts() {
 
         console.log(doc)
 
-        const result = await fetch(`http://localhost:8000/createAccount`, {
+        const result = await fetch(`${call}/createAccount`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: doc })
         }).then((res) => {
             const temp = res.status
 
+
+
             if (res.status == 200) {
                 alert("Account Created")
+                onSubmit(e)
                 setFirst("")
                 setLast("")
                 setEmail("")
-                setPw(" ")
+                setPw("")
 
                 setCreate(false)
             } else {
@@ -57,6 +70,14 @@ function Accounts() {
         })
     }
 
+    /**
+     * Creates a get request to the backend to find 
+     * a user in the "User" collection. The backend will 
+     * perform a check to ensure the passwords match.
+     * 
+     * On a successful request, the function will set the Data
+     * in the localStorage to simulate a log in
+     */
     const onSubmit = async (e: any) => {
         if (email == "" || pw == "") {
             alert("Invalid login information")
@@ -66,7 +87,7 @@ function Accounts() {
         e.preventDefault()
 
         const data = { email: email, pw: pw }
-        const result = await fetch(`http://localhost:8000/getAccount?data=${JSON.stringify(data)}`).then(async (res) => {
+        const result = await fetch(`${call}/getAccount?data=${JSON.stringify(data)}`).then(async (res) => {
             console.log("HERE")
             console.log(res.status)
 
@@ -89,7 +110,7 @@ function Accounts() {
     return (
         <>
             <div className="Accounts-Page-Container">
-                <Bar color={"white"} text={"blue"}></Bar>
+                <Bar></Bar>
                 <div className="Accounts-Login-Container">
                     {
                         window.localStorage.getItem("Data") != "" ?

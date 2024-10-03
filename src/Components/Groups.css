@@ -12,6 +12,10 @@
   display: none;
 }
 
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
 .Groups-Page-Container {
   background-color: var(--blue);
 
@@ -29,7 +33,7 @@
 
   flex-direction: column;
 
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .Groups-Create-Bar{
@@ -53,6 +57,9 @@
   background-color: var(--yellow);
   width: 20%;
   height: 70%;
+
+  color: var(--darkBlue);
+  font-size: 1rem;
 }
 
 .Groups-Buttons-Container {
@@ -68,6 +75,9 @@
 
   justify-content: space-around;
   padding-top: 1%;
+
+  overflow-y: scroll;
+  padding-bottom: 2%;
 
 }
 
@@ -98,8 +108,9 @@
   background-color: var(--white);
   width: 70%;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 30% 20% 20% 20%;
 
   padding-left: 2%;
 
@@ -135,7 +146,7 @@
 
 .Groups-Popup-Window{
   width: 50%;
-  height: 70%;
+  height: 75%;
 
   background-color: var(--white);
 
@@ -148,15 +159,17 @@
 }
 
 .Groups-Popup-Info{
-  width: 100%;
+  width: 98%;
   height: 20%;
   /* background-color: var(--blue  ); */
 
   display: grid;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(5, 20%);
   grid-template-rows: repeat(2, 50%);
 
   text-align: center;
+
+  margin-bottom: 2%;
 }
 
 .Groups-Popup-Button-Container{

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { call } from "../../Data/GroupData";
 
 interface Info {
     show: Boolean
@@ -10,8 +11,10 @@ interface Info {
     city: String;
     loc: String;
     users: Array<Object>;
-    end_time: String;
+    start_time: any
+    end_time: any;
     _id: String;
+    date: String,
     emails: Array<Object>
 }
 
@@ -30,8 +33,6 @@ function GroupsPopup(info: Info) {
     }, [])
 
     useEffect(() => {
-        // console.log("user in popup")
-        // setUser(info.users)
         setEmails(info.emails)
         getUser(info.emails)
     }, [info.show])
@@ -45,11 +46,16 @@ function GroupsPopup(info: Info) {
     }, [emails])
 
 
+    /**
+     * Makes a post request to the backend to 
+     * add the current user in "localStorage" 
+     * to the "users" array in the group
+     */
     const joinGroup = async () => {
         if (users.length != info.max_users) {
             const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
             // console.log(data)
-            const result = await fetch(`http://localhost:8000/addToGroup`, {
+            const result = await fetch(`${call}/addToGroup`, {
                 method: "post",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ data: data, _id: info._id })
@@ -77,9 +83,14 @@ function GroupsPopup(info: Info) {
 
     }
 
+
+    /**
+     * Makes a post request to the backend to find the current group 
+     * and removes it from the collection
+     */
     const deleteGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
-        await fetch(`http://localhost:8000/deleteGroup`, {
+        await fetch(`${call}/deleteGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: data, _id: info._id })
@@ -92,11 +103,15 @@ function GroupsPopup(info: Info) {
     }
 
 
-
+    /**
+     * Creates a post request to the backend
+     * and deletes the current user from the 
+     * "users" array in the current group
+     */
     const leaveGroup = async () => {
         const data = JSON.parse(window.localStorage.getItem("Data") || "{}")
         // console.log(data)
-        const result = await fetch(`http://localhost:8000/leaveGroup`, {
+        const result = await fetch(`${call}/leaveGroup`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: data, _id: info._id })
@@ -109,6 +124,7 @@ function GroupsPopup(info: Info) {
             console.log("POPUP JOIN GROUP JSON")
             console.log(json)
 
+
             if (json.length == 0 || json.length >= info.max_users) {
                 deleteGroup()
             } else {
@@ -119,13 +135,15 @@ function GroupsPopup(info: Info) {
         })
     }
 
+    /**
+     * Gets all users in the "users" array of the current group
+     * and updates the state to be displayed on the frontend
+     */
     const getUser = async (em: any) => {
-        const result = await fetch(`http://localhost:8000/getUser?doc=${em}`).then(async (res) => {
-
-
+        const result = await fetch(`${call}/getUser?doc=${em}`).then(async (res) => {
             const json = await res.json()
             // console.log("USERS")
-            // console.log(json)
+            console.log(json)
 
             setUser(json)
         });
@@ -140,49 +158,63 @@ function GroupsPopup(info: Info) {
                 <div className="Groups-Popup-Container">
                     <div className="Groups-Popup-Window">
                         <h1 id="Popup-Text" style={{ textAlign: "center" }}>{info.title}</h1>
+
                         <div className="Groups-Popup-Info">
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Location</h1>
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>City</h1>
                             <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Members</h1>
-                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>End</h1>
+                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Date</h1>
+                            <h1 style={{ fontSize: "1rem", paddingTop: "10%", color: "var(--blue)" }}>Time</h1>
+
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.loc}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.city}</h1>
                             <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{users.length || 0} / {info.max_users}</h1>
-                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.end_time}</h1>
+                            <h1 style={{ fontSize: "1rem", fontWeight: "normal", color: "var(--blue)" }}>{info.date}</h1>
+                            <h1 style={{ fontSize: "0.9rem", fontWeight: "normal", color: "var(--blue)" }}>{info.start_time + " - " + info.end_time}</h1>
+
                         </div>
                         <div className="Groups-Popup-Users">
                             {users.map((val: any, key: any) => {
-                                console.log("THIS IS VAL REPEAT")
-                                console.log(val)
-                                return (
-                                    <div key={key}>
-                                        <FaRegUserCircle style={{ color: "var(--blue)", fontSize: "3rem", marginRight: "2%" }}></FaRegUserCircle>
-                                        <p style={{ color: "var(--blue)" }}>{val.first + " " + val.last}</p>
-                                    </div>
-                                )
+                                // console.log("THIS IS VAL REPEAT")
+                                // console.log(val)
+                                if (val != null) {
+                                    return (
+                                        <div key={key}>
+                                            <FaRegUserCircle style={{ color: "var(--blue)", fontSize: "3rem", marginRight: "2%" }}></FaRegUserCircle>
+                                            <p style={{ color: "var(--blue)" }}>{val.first + " " + val.last}</p>
+                                        </div>
+                                    )
+                                } else {
+                                    return <h1>Loading...</h1>
+                                }
                             })}
                         </div>
                         <div className="Groups-Popup-Button-Container" >
-
                             {
-
-                                (window.localStorage.getItem("Data") != "" && !window.localStorage.getItem("Data")?.includes(emails[0])) && <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
+                                (window.localStorage.getItem("Data") != "" &&
+                                    !window.localStorage.getItem("Data")?.includes(emails[0]))
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => leaveGroup()}>Leave Group</button>
                             }
 
                             {
-                                window.localStorage.getItem("Data")?.includes(emails[0]) && <button className="Groups-Popup-Close-Button" onClick={() => deleteGroup()}>Disband Group</button>
+                                window.localStorage.getItem("Data")?.includes(emails[0])
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => deleteGroup()}>Disband Group</button>
                             }
 
                             <button className="Groups-Popup-Close-Button" onClick={() => info.setShow(!info.show)}>Close</button>
                             {
-                                window.localStorage.getItem("Data") != "" && <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
+                                window.localStorage.getItem("Data") != ""
+                                &&
+                                <button className="Groups-Popup-Close-Button" onClick={() => joinGroup()}>Join Group</button>
                             }
-
-
                         </div>
                         <div className="Groups-Popup-Button-Error">
                             {
-                                window.localStorage.getItem("Data") == "" && <p style={{ color: "black" }}>Please Login to join this group!</p>
+                                window.localStorage.getItem("Data") == ""
+                                &&
+                                <p style={{ color: "black" }}>Please Login to join this group!</p>
                             }
                             <p style={{ color: "black" }}>{error}</p>
                         </div>

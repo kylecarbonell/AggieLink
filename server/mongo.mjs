@@ -1,6 +1,9 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-const uri =
-  "mongodb+srv://kylecarbonell13:mqDJNOR8OsDdWXeg@aggieproject.gp5g1.mongodb.net/?retryWrites=true&w=majority&appName=AggieProject";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const uri = process.env.REACT_APP_MONGO_CON_KEY;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
