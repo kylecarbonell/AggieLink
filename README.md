@@ -1,25 +1,102 @@
-# AggieLink
 
-Ever needed a volleyball team to play with? Or how a bout a study partner for your chemistry class? 
+# AggieLink  
 
-With AggieLink, you will be able to find all types of UC Davis students with similar interests as you. AggieLink allows you to create and join different hangout groups ranging from boba runs to basketball open gym runs.
+## Overview  
+Have you ever wanted to find a volleyball team to join or a study partner for your chemistry class? **AggieLink** makes it easy for UC Davis students to connect with others who share their interests.  
 
-With the google maps api, you are able to easily choose locations to hangout and gather with your new friends.
+With AggieLink, you can create and join hangout groups ranging from boba runs to basketball open gyms. Using the Google Maps API, you can effortlessly pick convenient locations to meet and connect with your new friends.  
 
-So what are you waiting for, head to the link down below to create your first AggieLink group and start hanging out with your local UC Davis aggies.
+So what are you waiting for? Head to the link below and create your first AggieLink group to start building connections with your fellow UC Davis Aggies!  
 
-## How to use AggieLink
+---
 
-To use AggieLink simply go to https://aggielink.vercel.app/
+## Features  
+- **Find Groups**: Discover hangout groups based on your interests, from sports to coffee runs.  
+- **Create Groups**: Don’t see what you’re looking for? Create your own group and invite others to join!  
+- **Location Integration**: Easily choose meetup locations using Google Maps.  
+- **Filter Activities**: Use filters to sort activities by categories like food, sports, or study sessions.  
 
-1. To get started with AggieLink, click the `Login` button and create an account
-2. Enter your email and password from your newly created account and log into the website
-3. Find an activity that interests you or use the filter button to show only sports, coffee, food, etc.
-4. Click an acitivity to view the location, date, and other members in the group.
-5. If no groups pique your interests, feel free to create your own group, just enter the event, location, number of people, and time range you want to have your group.
-6. Wait until the inteded start time for your group and travel to your group location.
-7. Have fun!
+---
 
-## Tools used to create AggieLink
+## How to Use AggieLink  
+1. **Access the Website**:  
+   Go to [AggieLink](https://aggielink.vercel.app/).  
 
-AggieLink is a fully deployed website that uses `vercel.com` to host the front end and `render.com` to run the back end. The website uses a Non-relational document datebase called `MongoDB`, to save and read all data being used by AggieLink.
+2. **Create an Account**:  
+   - Click the **Login** button.  
+   - Sign up with your email and password.  
+
+3. **Explore Activities**:  
+   - Browse activities that interest you, or use the filter option to narrow down results (e.g., sports, coffee, food).  
+   - Click on an activity to view details like location, date, and other group members.  
+
+4. **Create Your Own Group**:  
+   - If you don’t see a group that matches your interests, create one by specifying:  
+     - Event name  
+     - Location  
+     - Group size  
+     - Time range  
+
+5. **Join the Fun**:  
+   - Wait until your group’s scheduled time, head to the location, and enjoy your hangout session!  
+
+---
+
+## Installation Instructions (For Local Development)  
+
+### Prerequisites  
+- **Node.js**: Download and install [Node.js](https://nodejs.org/).  
+- **MongoDB**: Set up a local or cloud-based MongoDB instance (e.g., using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).  
+
+### Steps  
+1. **Clone the Repository**:  
+   ```bash
+   git clone https://github.com/your-repo/aggielink.git
+   cd aggielink
+   ```
+
+2. **Set Up Environment Variables**:  
+   Create a `.env` file in the root directory and include the following:
+   ```env
+   MONGO_URI=your_mongo_database_connection_string
+   GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+   ```
+
+3. **Install Backend Dependencies**:  
+   Navigate to the backend folder:
+   ```bash
+   cd backend
+   npm install
+   ```
+
+4. **Run the Backend Server**:  
+   Start the backend server:
+   ```bash
+   npm start
+   ```
+
+5. **Install Frontend Dependencies**:  
+   Navigate to the frontend folder:
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+6. **Run the Frontend Application**:  
+   Start the frontend server:
+   ```bash
+   npm run dev
+   ```
+
+7. **Access the Application**:  
+   Open your browser and navigate to `http://localhost:3000` to use AggieLink locally.
+
+---
+
+## Tools and Technologies  
+AggieLink is a fully deployed web application built using modern web development tools:
+
+- **Frontend Hosting**: Vercel
+- **Backend Hosting**: Render
+- **Database**: MongoDB, a non-relational document-based database, to store and manage group data.
+- **Google Maps API**: Integrates location functionality for a seamless user experience.
