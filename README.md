@@ -1,5 +1,5 @@
 
-# AggieLink  
+# AggieLink — Social Group Discovery for UC Davis Students  
 
 ## Overview  
 Have you ever wanted to find a volleyball team to join or a study partner for your chemistry class? **AggieLink** makes it easy for UC Davis students to connect with others who share their interests.  
